@@ -1,0 +1,64 @@
+{
+  "schema": "claude-obsidian.hermes-adapter.v1",
+  "host": "hermes-agent",
+  "platform": "windows",
+  "knowledge_boundary": {
+    "vault": "external-vault",
+    "memory": "agent-context",
+    "interchangeable": false
+  },
+  "tool_map": {
+    "Read": "read_file",
+    "Grep": "search_files",
+    "Glob": "search_files",
+    "Write": "write_file",
+    "Edit": "patch",
+    "Bash": "terminal",
+    "Task": "delegate_task"
+  },
+  "vault_selection": {
+    "preferred": "explicit-absolute-path",
+    "configured_path": null,
+    "configuration_key": "HERMES_OBSIDIAN_VAULT",
+    "legacy_environment": "CLAUDE_OBSIDIAN_VAULT",
+    "product_root_is_vault": false
+  },
+  "native_windows_write_policy": {
+    "schema": "hermes-native-windows-reduced-v1",
+    "writer_model": "single-orchestrator",
+    "expected_content_recheck": true,
+    "checkpoint_before_multi_file_write": true,
+    "verify_after_write": true,
+    "lint_after_write": true,
+    "claims_upstream_transaction_equivalence": false,
+    "on_concurrent_drift": "abort"
+  },
+  "skills": [
+    {"upstream": "autoresearch", "hermes_name": "autoresearch", "treatment": "adapt", "backend_change": "hermes-research-tools"},
+    {"upstream": "canvas", "hermes_name": "canvas", "treatment": "keep", "backend_change": "native-write-policy"},
+    {"upstream": "defuddle", "hermes_name": "defuddle", "treatment": "adapt", "backend_change": "hermes-web-extraction"},
+    {"upstream": "obsidian-bases", "hermes_name": "obsidian-bases", "treatment": "keep", "backend_change": "native-write-policy"},
+    {"upstream": "obsidian-markdown", "hermes_name": "obsidian-markdown", "treatment": "keep", "backend_change": "narrow-trigger"},
+    {"upstream": "save", "hermes_name": "save", "treatment": "adapt", "backend_change": "external-vault-only"},
+    {"upstream": "think", "hermes_name": "wiki-think", "treatment": "adapt", "backend_change": "rename-and-narrow-trigger"},
+    {"upstream": "wiki", "hermes_name": "wiki", "treatment": "adapt", "backend_change": "authoritative-managed-vault"},
+    {"upstream": "wiki-cli", "hermes_name": "wiki-cli", "treatment": "adapt", "backend_change": "hermes-file-tools-transport"},
+    {"upstream": "wiki-fold", "hermes_name": "wiki-fold", "treatment": "keep", "backend_change": "native-write-policy"},
+    {"upstream": "wiki-ingest", "hermes_name": "wiki-ingest", "treatment": "adapt", "backend_change": "hermes-delegation-and-extraction"},
+    {"upstream": "wiki-lint", "hermes_name": "wiki-lint", "treatment": "adapt", "backend_change": "native-python-launcher"},
+    {"upstream": "wiki-mode", "hermes_name": "wiki-mode", "treatment": "adapt", "backend_change": "native-write-policy"},
+    {"upstream": "wiki-query", "hermes_name": "wiki-query", "treatment": "adapt", "backend_change": "external-vault-only"},
+    {"upstream": "wiki-retrieve", "hermes_name": "wiki-retrieve", "treatment": "adapt", "backend_change": "serialized-native-cache-writes"}
+  ],
+  "agents": [
+    {"upstream": "wiki-ingest", "runtime": "delegate_task", "role": "leaf", "writes": false, "template_path": "agents/hermes/ingest-worker.md"},
+    {"upstream": "wiki-lint", "runtime": "delegate_task", "role": "leaf", "writes": false, "template_path": "agents/hermes/lint-worker.md"},
+    {"upstream": "verifier", "runtime": "delegate_task", "role": "leaf", "writes": false, "template_path": "agents/hermes/verifier.md"}
+  ],
+  "collision_policy": {
+    "llm-wiki": "narrow-or-disable-before-activation",
+    "obsidian": "read-search-default-managed-writes-use-policy",
+    "save": "external-vault-only",
+    "think": "rename-to-wiki-think"
+  }
+}
