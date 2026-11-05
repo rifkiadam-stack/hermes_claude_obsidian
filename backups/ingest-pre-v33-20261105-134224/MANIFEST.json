@@ -1,0 +1,1386 @@
+{
+  "schema": "legacy-ingest-rollback.v1",
+  "purpose": "exact legacy skills and operational source before v3.3 adoption",
+  "source_core_commit": "f372d049c4357876cec4851f3abb4cb4d34144b3",
+  "source_core_worktree_status": "?? claude_obsidian/hermes_windows_bm25.py\n?? tests/test_hermes_windows_bm25.py\n",
+  "scope": "legacy second-brain skills, helper scripts/tests, tracked product source plus two known native BM25 files",
+  "excluded": "vault contents, Hermes config/.env/auth/cron/memories/profiles, credentials, databases and caches",
+  "file_count": 275,
+  "files": [
+    {
+      "path": "hermes-home/scripts/bm25_provision_native.py",
+      "sha256": "d18f4ad34688050cc608cc28bde73aeddd72189c4f9d4b3b241a572003b43d76",
+      "bytes": 18994
+    },
+    {
+      "path": "hermes-home/scripts/second_brain_staging_cleanup.py",
+      "sha256": "26a379e97b623a36e2770e7a138f69065fee73ddb88ef3ab0ba8c982d27039a1",
+      "bytes": 6208
+    },
+    {
+      "path": "hermes-home/scripts/tests/test_bm25_provision_native.py",
+      "sha256": "e9186dabe4620c3e76c708862351d93fcb02ff250f1d9ec74b848d8df9cf1b4d",
+      "bytes": 16895
+    },
+    {
+      "path": "hermes-home/scripts/tests/test_second_brain_staging_cleanup.py",
+      "sha256": "a3af7858267e89c2d0f230e302b127b9c074a9d0776f19cf29d94b51c982cb7f",
+      "bytes": 4653
+    },
+    {
+      "path": "hermes-home/skills/note-taking/second-brain-vault/SKILL.md",
+      "sha256": "40bc959037c05d4fad09aca8840ff5f73d17eb56912d8606dd6e2a58d2ffdf47",
+      "bytes": 9201
+    },
+    {
+      "path": "hermes-home/skills/note-taking/second-brain-vault/references/batch-ingest-guard.md",
+      "sha256": "ca3e18f218bee3ae7705690c8aa03a875009750cdd75b8644eded76c333bb4f5",
+      "bytes": 5032
+    },
+    {
+      "path": "hermes-home/skills/note-taking/second-brain-vault/references/user-filing-routes.md",
+      "sha256": "859194eddcb1714302df7ca9a2826eb0387dc17c69b8c646f5034f1430d5696e",
+      "bytes": 817
+    },
+    {
+      "path": "hermes-home/skills/note-taking/second-brain-vault/references/windows-bm25.md",
+      "sha256": "d9a26b8007c94d56b9b66057c6f67386154e9e1624afced42509efb573e44fc7",
+      "bytes": 2798
+    },
+    {
+      "path": "hermes-home/skills/note-taking/second-brain-vault/references/write-guard-api.md",
+      "sha256": "1307cd056d4cfa71b17e66ee0593a98ba841ca37dc584dcc559c62b918199b2e",
+      "bytes": 4751
+    },
+    {
+      "path": "hermes-home/skills/note-taking/second-brain-vault/scripts/vault_health_check.py",
+      "sha256": "a2cfb60181eb41570dc17629dabb82249449a806a9d53d696029d3fb25254193",
+      "bytes": 3093
+    },
+    {
+      "path": "hermes-home/skills/second-brain/autoresearch/SKILL.md",
+      "sha256": "d65e57a1fca2a02f3fe6d024f6683f61bdf7167abfd3f39c999058476486807f",
+      "bytes": 6170
+    },
+    {
+      "path": "hermes-home/skills/second-brain/autoresearch/references/program.md",
+      "sha256": "d4ac8ac443461723069cad0e4eacf7d303c1bed644bcf76dda24649ec97991c8",
+      "bytes": 3480
+    },
+    {
+      "path": "hermes-home/skills/second-brain/canvas/SKILL.md",
+      "sha256": "8b89862bbe2708280807a40d412f037bfb6416f7c15b191958cadb4a59572bfc",
+      "bytes": 5194
+    },
+    {
+      "path": "hermes-home/skills/second-brain/canvas/references/canvas-spec.md",
+      "sha256": "b6a77a238983fd696f5f6a07d7abab98615be7b6108236f0f7b7912e82544cb2",
+      "bytes": 9001
+    },
+    {
+      "path": "hermes-home/skills/second-brain/defuddle/SKILL.md",
+      "sha256": "4a68941969725839a412e9b4a41ab6e232e4f64cfa6ccecc2aed5986fb1bc6c1",
+      "bytes": 4362
+    },
+    {
+      "path": "hermes-home/skills/second-brain/document-ingest-provenance/SKILL.md",
+      "sha256": "1fffdd1ddf05739d8e46f8efdcbb8ff90be46609bc646324d71b10327d28fda8",
+      "bytes": 4227
+    },
+    {
+      "path": "hermes-home/skills/second-brain/document-ingest-provenance/references/authored-notes-and-supporting-pdfs.md",
+      "sha256": "563d9e476e3e4a4df72d4b4b73b12ceb251c69eed96f18662c7b7e7ea8fa1395",
+      "bytes": 1214
+    },
+    {
+      "path": "hermes-home/skills/second-brain/document-ingest-provenance/references/pasted-market-update-checklist.md",
+      "sha256": "a7f0e24c2446d431d7ffb5db986037371a2bb37ecde3369c917fa22b3923ccf6",
+      "bytes": 1120
+    },
+    {
+      "path": "hermes-home/skills/second-brain/moc-duplikasi-backup/SKILL.md",
+      "sha256": "eca0a7f19e95eac6e7851ab718aaac83817150a06c4b89e68c5a44f85edf6442",
+      "bytes": 4820
+    },
+    {
+      "path": "hermes-home/skills/second-brain/obsidian-bases/SKILL.md",
+      "sha256": "c3282a03e65c9e4e19d9979e45d48515e831f1cbb5955b5120ebaa8ac3545fe3",
+      "bytes": 4464
+    },
+    {
+      "path": "hermes-home/skills/second-brain/obsidian-markdown/SKILL.md",
+      "sha256": "d22aab8bf2e5631986461f3ded3a747d0beac89f73c04a27ebc837834071b257",
+      "bytes": 4328
+    },
+    {
+      "path": "hermes-home/skills/second-brain/save/SKILL.md",
+      "sha256": "9a61c97fda1392a59def2a7c20c6480a36c0d16ba4709e49b48b25be27666b6f",
+      "bytes": 5061
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-clippings-ingest/SKILL.md",
+      "sha256": "fa6d5cb6231cfe900e8b275995154d57ab2d900e8eb6ae1e48c5369d33970661",
+      "bytes": 10596
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-clippings-ingest/references/ingest-fidelity-and-routing.md",
+      "sha256": "256e38b6706cc758478aadee96524562fe0d1c6d4de5bc7d967731b3b7376dee",
+      "bytes": 6596
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-clippings-ingest/references/preservation-and-mode-review.md",
+      "sha256": "62f89183f0ba953bfc5c2e299fbe11ced74f062340396ebc813e77d06ba2b179",
+      "bytes": 3393
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-ingest-operations/SKILL.md",
+      "sha256": "f9b51404852559761d7d8daa85a531bb0972b8e02b5c4e058e9627e1fecb4f59",
+      "bytes": 31069
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-ingest-operations/references/market-snapshot-consistency.md",
+      "sha256": "80c9b31905eb94b966ce6343c21484bfac09bf0a3aec129e0a8204b5c01f9c5d",
+      "bytes": 3973
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-ingest-operations/references/market-update-daily-ingest-recipe.md",
+      "sha256": "51d66454357e4e46ced81c8ec554ab6b2d341100ba9c6a61bfd5ee3383507889",
+      "bytes": 9336
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-ingest-operations/references/native-windows-pasted-text-ingest.md",
+      "sha256": "ab67fb045010ad29fca49c64ee256910c8b511b834869b6f66101b81a5f55907",
+      "bytes": 4363
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-ingest-operations/references/transcript-design-review.md",
+      "sha256": "b243b0c7e56a791e8a348b7a7a7e57aa4cbce00dbbb2e19df14283e1906db393",
+      "bytes": 5257
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-native-windows/SKILL.md",
+      "sha256": "5e34983eaa1f3440ff4d3a716e54532b7b85ba5793d3b57ee38eb190e527da36",
+      "bytes": 20824
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-native-windows/references/asset-rename-workflow.md",
+      "sha256": "f1e769f09c549172d2ba25a63b8eca67ef71c93e495910fe27483969b66ad260",
+      "bytes": 2426
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-native-windows/references/bm25-native-windows.md",
+      "sha256": "4e069518539b451b8e0887c5d864053170b41c35733640262ccc5c53665580f8",
+      "bytes": 7582
+    },
+    {
+      "path": "hermes-home/skills/second-brain/second-brain-native-windows/references/staging-cleanup-guard.md",
+      "sha256": "d2040623717dccfc2356a7923428ed0f57c4d02472280ac07a315281a8653a4b",
+      "bytes": 1841
+    },
+    {
+      "path": "hermes-home/skills/second-brain/think/SKILL.md",
+      "sha256": "876448b42e2835dcf92c67984140e17c41d262161f5409cabddbe1a885c91e31",
+      "bytes": 4613
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-cli/SKILL.md",
+      "sha256": "aa268d6cd87c5d51ed4aeb5d7ed35a8e3e844ba93f283272d36547fe8d5ff9ab",
+      "bytes": 2800
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-fold/SKILL.md",
+      "sha256": "115b4e0f0bd71115052c39a9a3e3d8e6effb7c5b1924ed368bcaef17161a6fd5",
+      "bytes": 4413
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-fold/references/fold-template.md",
+      "sha256": "9542a4a5c9b34f54458d01ac542039e2d893da03dbac061ff99f06d2b13b1111",
+      "bytes": 3312
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-ingest/SKILL.md",
+      "sha256": "6c1c93513bb3a36176e4dcf85c49b383b107fb070e6bb23abb7a8697a7afee99",
+      "bytes": 13470
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-ingest/references/islamic-lectures.md",
+      "sha256": "26afe1e75d2e09fcf29bdbd1f1994b1d41bb448be5a27bf39cb43b587d3e09bf",
+      "bytes": 2976
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-ingest/references/transcript-sources.md",
+      "sha256": "5c1c9109ac219a2e929bba0398a2857ffadb3f8299e4eb05b4008ff8c2215645",
+      "bytes": 10994
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-lint/SKILL.md",
+      "sha256": "f8a3d5b7d9f77995688e3c7a1ac99eb2cde4d773a652351c47c12516284cfca7",
+      "bytes": 3026
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-mode/SKILL.md",
+      "sha256": "6cf8a0a4066d6d4ec12ebb72ad25bedf8b29aaa2c4a1460b4e4a8984d6d55e0e",
+      "bytes": 3950
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-mode/templates/lyt/atomic-template.md",
+      "sha256": "015b912ff18a2f7c7cf00aaaf72894a2c36c1d44130b9201501491c364d55d40",
+      "bytes": 374
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-mode/templates/lyt/moc-template.md",
+      "sha256": "a282349f22a11b04e42a23740ed8044c6027ea2c9b39feea0a0b880eab103029",
+      "bytes": 736
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-mode/templates/para/area-template.md",
+      "sha256": "358f21f12d094fff96eb630094879ea9e66d7394e72a7db6abb15c6c9ae4f2ad",
+      "bytes": 516
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-mode/templates/para/project-template.md",
+      "sha256": "82b92d9b91db4295e0f69710f8641e7d69af6654e561210b425b1c7d504a0cb5",
+      "bytes": 458
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-mode/templates/para/resource-template.md",
+      "sha256": "07ac35a2247032da7fd1b82af1e0489b158d9924af23e7c8f4f51736e78a2f9f",
+      "bytes": 472
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-mode/templates/zettel/atomic-template.md",
+      "sha256": "3d59bbba5940a3ab7f0a58234a43426268c11c2f1abfa8b707147b46a2a01547",
+      "bytes": 671
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-query/SKILL.md",
+      "sha256": "998fc40ad8ddf272c0bd8c9bf4225cb25c38a1a65c91bff01574b21b15a21c6c",
+      "bytes": 4506
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki-retrieve/SKILL.md",
+      "sha256": "a6f49ecac7f03fb879505442734180c0ffbf4696efd5ead19d8e69c04c86529c",
+      "bytes": 6748
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/SKILL.md",
+      "sha256": "87e90865b89b984e5c69ba45dc4b1d0e1b61d5c9361f1f2fc97e4f3101733088",
+      "bytes": 5392
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/css-snippets.md",
+      "sha256": "1b493d6b601a2ebc8ace6db75acfa84663ecfb8633f2a1b93da874793615f625",
+      "bytes": 4399
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/frontmatter.md",
+      "sha256": "8c2adb0feeaddfe13d6fcc05ba0daa477ca129eade00f24d7c63d96dc9765eaf",
+      "bytes": 2322
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/git-setup.md",
+      "sha256": "8fb1229794dc54245973f1708b70bdd4b87623644cec5d605a6a1dad0950430e",
+      "bytes": 2576
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/install-modes.md",
+      "sha256": "51b0ce8e1f86b790dc62200fd9d7e71eaa8b6508e780982c10c301daf8b19b91",
+      "bytes": 1914
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/mcp-setup.md",
+      "sha256": "56353117c309c6d7ea65128a66885d29a3a34c96b2c974c9f4e8785b255a718a",
+      "bytes": 1900
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/modes.md",
+      "sha256": "affecc6cc55d8344593d846ef94a72baec4faacdb654c0d31721176779926eca",
+      "bytes": 3127
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/operation-transactions.md",
+      "sha256": "23b6aba0e28b0cdc46f11910a4b6e4ba52b6150b9daa499490d71d6a1e8d8c1f",
+      "bytes": 6186
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/plugins.md",
+      "sha256": "696f9d3a44c76e4817e0b8698f0d7e8def098cabcb4086f067696d3288c05dc4",
+      "bytes": 2140
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/provenance.md",
+      "sha256": "f4bc7478299c73e0f624200940eefa63cf6784f718ef4f60d50ca2c173613a2f",
+      "bytes": 2579
+    },
+    {
+      "path": "hermes-home/skills/second-brain/wiki/references/rest-api.md",
+      "sha256": "79179ede8e8b8279ac0ec9982c616b86b548428edf14175e86c0dd02e5932ffb",
+      "bytes": 1428
+    },
+    {
+      "path": "product/.claude-plugin/marketplace.json",
+      "sha256": "43af05abd417b29546718cf5bc34a7d1ad61e315e720ba333bb58fac1d661d67",
+      "bytes": 841
+    },
+    {
+      "path": "product/.claude-plugin/plugin.json",
+      "sha256": "06fdf354d12f118596281ed47c72a9200c16e42a5125b985f87733d1870105ce",
+      "bytes": 970
+    },
+    {
+      "path": "product/.cursor/rules/claude-obsidian.mdc",
+      "sha256": "e3e3f92ee043547cbb830d071247fde2def3b270545e230ec480d6397e01d416",
+      "bytes": 1154
+    },
+    {
+      "path": "product/.gitattributes",
+      "sha256": "45b7bfba1c24110c17ee3f2b937dc45ef810828a0dd5565e172b2b2911bd6d85",
+      "bytes": 236
+    },
+    {
+      "path": "product/.github/FUNDING.yml",
+      "sha256": "a108353ea90417f4a66aabeead564df231b23d480392c0ce7ff491160d15e5f4",
+      "bytes": 55
+    },
+    {
+      "path": "product/.github/ISSUE_TEMPLATE/bug_report.md",
+      "sha256": "684f9b248960b51bed7089c02ab30d9be9a25caa70f2c4f3efbc9f6489602d39",
+      "bytes": 1269
+    },
+    {
+      "path": "product/.github/ISSUE_TEMPLATE/feature_request.md",
+      "sha256": "7c4f9ec6e92bc4bd631ee37b83ff50723162cddacb8003e9cc5c5f8d38b22ea3",
+      "bytes": 1201
+    },
+    {
+      "path": "product/.github/copilot-instructions.md",
+      "sha256": "35abbef26c548e01f75bf3fc3f5a2f6e2beba595968e5a63491d4947afaca948",
+      "bytes": 898
+    },
+    {
+      "path": "product/.github/pull_request_template.md",
+      "sha256": "d8ecdfe054b7974e335ad7f928d34c2b60a3a7e9a95e037219ebaa9038cd2c2d",
+      "bytes": 1702
+    },
+    {
+      "path": "product/.github/workflows/test.yml",
+      "sha256": "306ca52be462f6a3f52b9da3792801cf9cc8e5ea82abc71596346112110c5c17",
+      "bytes": 4067
+    },
+    {
+      "path": "product/.gitignore",
+      "sha256": "c9d9bb4a1bd450480412ec3c36cb7d963f66c36b24d678c5caa4146c95ac4d84",
+      "bytes": 3715
+    },
+    {
+      "path": "product/.windsurf/rules/claude-obsidian.md",
+      "sha256": "3b125876870d16942b5c9497e74e0d80da9e44d0b4a0f70bccf110ddbac99630",
+      "bytes": 768
+    },
+    {
+      "path": "product/AGENTS.md",
+      "sha256": "f12fe295445b942a38c82e07f486428f548df32f9ca9ca2302b58ace8c68cf99",
+      "bytes": 4775
+    },
+    {
+      "path": "product/ATTRIBUTION.md",
+      "sha256": "8c24b56cea5e32d640edb0ac3919b0cd240505f5c5980fb8cc4cc59078363f8c",
+      "bytes": 2188
+    },
+    {
+      "path": "product/CHANGELOG.md",
+      "sha256": "f5297932a6718003fc793af96b7ea783dd49ed60f4765643202d80cef01cc2a4",
+      "bytes": 12099
+    },
+    {
+      "path": "product/CITATION.cff",
+      "sha256": "0517421d7145d38ced6467639f6723623aa302de83f756e56d64e1a3d81d7f43",
+      "bytes": 468
+    },
+    {
+      "path": "product/CODEOWNERS",
+      "sha256": "b47b715103bc8cefe7badafb5622793ac912480a3515ac5491fa99e87dea73dc",
+      "bytes": 47
+    },
+    {
+      "path": "product/CODE_OF_CONDUCT.md",
+      "sha256": "ecaa67da0c9e18408f6d016a5a41e2dbcb83265d25e091550a71da0aa364930b",
+      "bytes": 1081
+    },
+    {
+      "path": "product/CONTRIBUTING.md",
+      "sha256": "c296ae13ad8df5099bd276aaeaa7b5f66224f0e9f757e4f00030386f9f74a927",
+      "bytes": 2744
+    },
+    {
+      "path": "product/GEMINI.md",
+      "sha256": "267b205d74e9afcb23297c9acd32dee77094f21b21d99cbc4c32ad9635572a07",
+      "bytes": 964
+    },
+    {
+      "path": "product/LICENSE",
+      "sha256": "76b3e6f4e8feded5de411eb3b081514b3cfe82d2ba5fc1aac2504bc4be999ee8",
+      "bytes": 1153
+    },
+    {
+      "path": "product/Makefile",
+      "sha256": "8dcba333e4abc60a1cd70c869ec39fa5e6e780135d76520cb20c39a6ebe761be",
+      "bytes": 2551
+    },
+    {
+      "path": "product/PRIVACY.md",
+      "sha256": "0d7ca4c0c293413115d7db08eed97cf318cdf1a322c1d12bebb1a38ec8747f99",
+      "bytes": 2588
+    },
+    {
+      "path": "product/README.md",
+      "sha256": "ab31b15d6db28962dd25a003bc5ccfc5c78f14a8c116f9ae9323dba4a7887e39",
+      "bytes": 6862
+    },
+    {
+      "path": "product/RELEASE_MANIFEST.json",
+      "sha256": "ffeb3299e106797d84ca39323f1af41e68b23522d810097e294a704160d469ce",
+      "bytes": 37692
+    },
+    {
+      "path": "product/SECURITY.md",
+      "sha256": "ca911a8388ec1e326d3f18837b02566d5e85b8944e55f6c12fa339a3ca6c37dc",
+      "bytes": 3584
+    },
+    {
+      "path": "product/SHA256SUMS",
+      "sha256": "5f23a3bd3dbf1a553fc0178052cdc24128e82e17f60a3bd2cc51e8e2a3ff2eaa",
+      "bytes": 19357
+    },
+    {
+      "path": "product/WIKI.md",
+      "sha256": "cac08db66f6c15cf137aa50cc18538aed595a2f76c4fe7873b5204fd6853640a",
+      "bytes": 9409
+    },
+    {
+      "path": "product/agents/hermes/ingest-worker.md",
+      "sha256": "52f4ce78ed594bf8111c12aaf6d730bddd7e7aeb1dfa622ff7161c1409640d0c",
+      "bytes": 1635
+    },
+    {
+      "path": "product/agents/hermes/lint-worker.md",
+      "sha256": "cd85a515f5cfad6b4178465548ee8f329f6f0343b231fb355af7426f943680fd",
+      "bytes": 1322
+    },
+    {
+      "path": "product/agents/hermes/verifier.md",
+      "sha256": "b4a752057b799ced89f48b6e2d31bddc34942fa9d40921e5837d209ca4e7c685",
+      "bytes": 1349
+    },
+    {
+      "path": "product/agents/verifier.md",
+      "sha256": "90976a00b4ba4fb078d1c857ffa78d4f17452459e73d155351780f14756c1b5a",
+      "bytes": 4978
+    },
+    {
+      "path": "product/agents/wiki-ingest.md",
+      "sha256": "e055b30af416695cdd69ecfaa5221fc16158eb25414593266db347b7bc3f2fe9",
+      "bytes": 4918
+    },
+    {
+      "path": "product/agents/wiki-lint.md",
+      "sha256": "00dbca675b5f9ecc76ba92e8d2bef3c9283760f8cda2e5c90a28169abde0495c",
+      "bytes": 3008
+    },
+    {
+      "path": "product/assets/cover.png",
+      "sha256": "7921a6494df958c9bf236cbaa141fc23641efc2ca16f2775be9913ce91724197",
+      "bytes": 511009
+    },
+    {
+      "path": "product/assets/diagrams/knowledge-loop.svg",
+      "sha256": "c528d080711f53ae0afcb4dc3271ebe8b98f1e75b5e0330b1e91fa99588989e1",
+      "bytes": 7794
+    },
+    {
+      "path": "product/assets/diagrams/product-vault-boundary.svg",
+      "sha256": "8b7a65d6a9cb2e438d77091ac1835f71935467537af208061f552260eb714d91",
+      "bytes": 9378
+    },
+    {
+      "path": "product/assets/screenshots/graph-view.png",
+      "sha256": "9faa4a414ccfa2618ab849519ca81a66fe5eb096c90491fc9fe650099f3002cc",
+      "bytes": 361974
+    },
+    {
+      "path": "product/assets/screenshots/wiki-map-view.png",
+      "sha256": "76d5e1ce23d4a76bca4c09e737fb3ac494e787556fcb385d6acc2af66235be89",
+      "bytes": 218000
+    },
+    {
+      "path": "product/bin/setup-dragonscale.sh",
+      "sha256": "91e3f5f652447ff40ff8a9f3f7f89273734e96cf7dd4dd345a7327acf0ce2647",
+      "bytes": 2185
+    },
+    {
+      "path": "product/bin/setup-mode.sh",
+      "sha256": "98564f4de5ec27cb0f892546491c0d735d49504b1a7f06ce4299396dc633bec5",
+      "bytes": 2286
+    },
+    {
+      "path": "product/bin/setup-multi-agent.sh",
+      "sha256": "57e0015784b70fb2331b188c24ddd15ed090e877fc899b843b8a3239ac99da4c",
+      "bytes": 5062
+    },
+    {
+      "path": "product/bin/setup-retrieve.sh",
+      "sha256": "adf3783152dc72d162e7046774cc52d5336f0ceaaf9b7a8689c17b64db675d14",
+      "bytes": 3133
+    },
+    {
+      "path": "product/bin/setup-vault.sh",
+      "sha256": "6ae0dedbdcbc8687697b18414b17fe3884e0e4c59e39b30fd803201072c8850f",
+      "bytes": 5314
+    },
+    {
+      "path": "product/claude_obsidian/__init__.py",
+      "sha256": "04085f7c054ce338249708fc8230d8da510250ddc04e3b3baef17293d1205d67",
+      "bytes": 296
+    },
+    {
+      "path": "product/claude_obsidian/__main__.py",
+      "sha256": "9573278a10fd58f03b8d2480311533fb9d8ceec8e0ec13ce414b811d27c78c04",
+      "bytes": 85
+    },
+    {
+      "path": "product/claude_obsidian/capture.py",
+      "sha256": "9fded207710e1e9b2fb60c6616b0675338b5eeaa1959f4ad972faec3c1ebd891",
+      "bytes": 83828
+    },
+    {
+      "path": "product/claude_obsidian/checkpoint.py",
+      "sha256": "12fb1522321cddc72e2fe2123f56010a1c81ff0a0ec91b8659c2451a566a3e85",
+      "bytes": 50166
+    },
+    {
+      "path": "product/claude_obsidian/cli.py",
+      "sha256": "38703e6db742f1c76ba6f8cce797b8ecf69a7cdf2ff1f9c739df60acab7e973a",
+      "bytes": 44772
+    },
+    {
+      "path": "product/claude_obsidian/contracts.py",
+      "sha256": "995baf1ce86fc2b2ad426523bd142ef0853f6a41841dcd0e557c463cc8e9025c",
+      "bytes": 49622
+    },
+    {
+      "path": "product/claude_obsidian/extensions.py",
+      "sha256": "846ef977af9d8029fdde3c7024159b3e8c35e3bd6c5fba020173726009bb5ee9",
+      "bytes": 2679
+    },
+    {
+      "path": "product/claude_obsidian/gates.py",
+      "sha256": "d36cf301e5c4bbd40e5f225abd9cfa8f2071e59ef918a8a9d119ad4a8932b974",
+      "bytes": 5014
+    },
+    {
+      "path": "product/claude_obsidian/hermes_windows_bm25.py",
+      "sha256": "a805248e52744b783923420ff7569081797a1e24e11bd48798c57a45918ca8db",
+      "bytes": 13651
+    },
+    {
+      "path": "product/claude_obsidian/hermes_windows_write.py",
+      "sha256": "49751ec85891dd6af9163f52e87c08846859ef8e99070bc121eecd23a195ce86",
+      "bytes": 43595
+    },
+    {
+      "path": "product/claude_obsidian/hook_adapter.py",
+      "sha256": "79a3824641fd146a8960b57ca74bc4cd7fa29688f8928cdcd0e6ecbce5b35743",
+      "bytes": 11886
+    },
+    {
+      "path": "product/claude_obsidian/json_utils.py",
+      "sha256": "31143eebb4e9d22de3159753a368a71ef2a15f3c84177e0507a29885ac1d31f1",
+      "bytes": 1105
+    },
+    {
+      "path": "product/claude_obsidian/ledgers.py",
+      "sha256": "32cec2e5cc9846badbc4749e1e088988291c5d3a9db9abd2648de15213d4a038",
+      "bytes": 52285
+    },
+    {
+      "path": "product/claude_obsidian/legacy_lock.py",
+      "sha256": "6edd094debd30ac3550974a624e37bc13d1902a355888009778cad812ebe5d18",
+      "bytes": 24317
+    },
+    {
+      "path": "product/claude_obsidian/lint_engine.py",
+      "sha256": "775cecd84170774fc3bf2f95a61c8b68df30e870baf863b4ac054b08587b94c3",
+      "bytes": 44602
+    },
+    {
+      "path": "product/claude_obsidian/mode_config.py",
+      "sha256": "0dfa01bfcf52e55bcc50f5f7bbc4b2c2cc945f333cb5847b933da9c2a2579cbb",
+      "bytes": 2800
+    },
+    {
+      "path": "product/claude_obsidian/package_validation.py",
+      "sha256": "fb03b4bdfe350bc070874b2754edd18ff705cf5698b5a6ddd886565c6c5fa79d",
+      "bytes": 26386
+    },
+    {
+      "path": "product/claude_obsidian/paths.py",
+      "sha256": "970e7ba997d9a7666d99c24562881a3ea677053d77fe8fd3c689fd3b7988bbf6",
+      "bytes": 14533
+    },
+    {
+      "path": "product/claude_obsidian/release.py",
+      "sha256": "a99e4f09821caba7ccfd1f4cc564d7270447db47d3d1938f0d725786f1f49f87",
+      "bytes": 90792
+    },
+    {
+      "path": "product/claude_obsidian/transaction.py",
+      "sha256": "e83ac2c5c3374890e07a55af3d223711c5f6696c84f23e46bb65511787300128",
+      "bytes": 176079
+    },
+    {
+      "path": "product/claude_obsidian/url_safety.py",
+      "sha256": "d32b74164daa1bc735cc9a96b2cce07a5e3aa08209e4bdd2328dc6b8ef761d6b",
+      "bytes": 2402
+    },
+    {
+      "path": "product/claude_obsidian/vault_ops.py",
+      "sha256": "ced9fc0cffb5f24a7772ec649cc09aaeca693725e17e2b66345572a1769e4ec9",
+      "bytes": 4812
+    },
+    {
+      "path": "product/config/adapters.json",
+      "sha256": "edbaa57d35216b18ed33b6f1ded542cef851bac6271af5e58779a4f62df67af9",
+      "bytes": 2803
+    },
+    {
+      "path": "product/config/capabilities.json",
+      "sha256": "9a372c18db93608f7112e8956f8dbb520c266e537b3794dee14b7436de3bc246",
+      "bytes": 17496
+    },
+    {
+      "path": "product/config/hermes-adapter.json",
+      "sha256": "2ecf8643d206c7d4dda33ae3ec07a8841e835c707001b964e8922e96e9cbe7a3",
+      "bytes": 3599
+    },
+    {
+      "path": "product/config/product-contract.json",
+      "sha256": "b4455ef26fb0b8a1c327220d4156a13afe0dd3aa619d98ff2ed4eda44eae5ccd",
+      "bytes": 6716
+    },
+    {
+      "path": "product/config/public-marketplace.json",
+      "sha256": "43af05abd417b29546718cf5bc34a7d1ad61e315e720ba333bb58fac1d661d67",
+      "bytes": 841
+    },
+    {
+      "path": "product/config/release-allowlist.json",
+      "sha256": "2f09ac8a89734c39c0023ce5b09bb028a3f46cdc97f49af99bcd0af6749ff88c",
+      "bytes": 2054
+    },
+    {
+      "path": "product/docs/compound-vault-guide.md",
+      "sha256": "3ad7192a28509f88992c5d12b5ec26e7d6810a0f9fe7e51371bf83ce21356b11",
+      "bytes": 9554
+    },
+    {
+      "path": "product/docs/dragonscale-guide.md",
+      "sha256": "f52eb7da023d165d61cbf2e9a64682b6152376fb36aa784b4752f383c95205e3",
+      "bytes": 3731
+    },
+    {
+      "path": "product/docs/hermes-native-windows.md",
+      "sha256": "818605352bc5eeb43744a0a75bdd60369792859ab306ad50398517dd972d602e",
+      "bytes": 4918
+    },
+    {
+      "path": "product/docs/install-guide.md",
+      "sha256": "a0a93b21e0311192ad9b6677a95be19cf708f50ab822f6cefba5c1685931464d",
+      "bytes": 9963
+    },
+    {
+      "path": "product/docs/methodology-modes-guide.md",
+      "sha256": "034369dfca27c5d81c60bc8e406ef58353e24848b69c3242378f3e54e2008c19",
+      "bytes": 4122
+    },
+    {
+      "path": "product/docs/windows-wsl.md",
+      "sha256": "52175c72aaedddcf995198c4b4be10948976897813f0419e385e8ead44dbeead",
+      "bytes": 4262
+    },
+    {
+      "path": "product/examples/sample-vault/.claude-obsidian.json",
+      "sha256": "5701c6910dcdb39cd0494769e6e8e2814cbb01cf2bc5c29d2b40fcf5094e1453",
+      "bytes": 133
+    },
+    {
+      "path": "product/examples/sample-vault/.gitignore",
+      "sha256": "0d62dd96ce7a511d2f0154b6373b7a0bfc74b7985c2342af9357751b9fba42dd",
+      "bytes": 351
+    },
+    {
+      "path": "product/examples/sample-vault/.obsidian/app.json",
+      "sha256": "b8c736f8900e4d28ead438125440572f32f5a475dd094ba7155b0879dc253c4b",
+      "bytes": 65
+    },
+    {
+      "path": "product/examples/sample-vault/.raw/.manifest.json",
+      "sha256": "fe97dd8d2e839ae642d1e4829ed278b9922d5594012623bb677121591b841807",
+      "bytes": 133
+    },
+    {
+      "path": "product/examples/sample-vault/inbox/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1
+    },
+    {
+      "path": "product/examples/sample-vault/wiki/concepts/Source-grounded notes.md",
+      "sha256": "be7a6427dcc1f3789a9c77b361ff17f06474836e4d6d71201504f80998fc6dee",
+      "bytes": 376
+    },
+    {
+      "path": "product/examples/sample-vault/wiki/entities/Example Maintainer.md",
+      "sha256": "48805779d316881bd97b95502348bcf663622c0bc190b6b56869f92597f2ec09",
+      "bytes": 311
+    },
+    {
+      "path": "product/examples/sample-vault/wiki/hot.md",
+      "sha256": "4c74f91b799c624fc6c209f4148f1d1344454b22bf7b2ef7a817a584b1742e51",
+      "bytes": 236
+    },
+    {
+      "path": "product/examples/sample-vault/wiki/index.md",
+      "sha256": "3ef4c2b655da5ef136d01bcb2aa2ec232b6a616c0528440673a3e78079b17436",
+      "bytes": 409
+    },
+    {
+      "path": "product/examples/sample-vault/wiki/log.md",
+      "sha256": "d8615027ba0a974a2bfc61f851c18c24e8f079c034e4abbc8cb466c13c305259",
+      "bytes": 227
+    },
+    {
+      "path": "product/examples/sample-vault/wiki/overview.md",
+      "sha256": "780b571e489b9a5ae07fc2da8d8c507453b780da535d1a3bf4ac021e19af0118",
+      "bytes": 303
+    },
+    {
+      "path": "product/examples/sample-vault/wiki/questions/What supports source-grounded notes.md",
+      "sha256": "e7fe1477aa998aa127863ef9cee3748c552daa381d4913359d717f6e431d8816",
+      "bytes": 386
+    },
+    {
+      "path": "product/examples/sample-vault/wiki/sources/Example Source.md",
+      "sha256": "f6123181a64375182a61cfb7dab6c1dffe209d7166c21852d9e18e5fd78af764",
+      "bytes": 382
+    },
+    {
+      "path": "product/hooks/README.md",
+      "sha256": "ab529c807de8733f92958815c4206aa47eb664f26417eb04eaa274cc8ce3ccf8",
+      "bytes": 1393
+    },
+    {
+      "path": "product/hooks/hooks.json",
+      "sha256": "e3c3469bfc6f8f0de380a4616f6e0e5733278fac3ad4ed43958cb6055bf855d1",
+      "bytes": 740
+    },
+    {
+      "path": "product/scripts/allocate-address.sh",
+      "sha256": "999ffab114d8584bacde49d36c10858a4e86784f84952e3056a150835618f03c",
+      "bytes": 3139
+    },
+    {
+      "path": "product/scripts/bm25-index.py",
+      "sha256": "6d9a2d9fc6b9dd08061ed6606b7dbff60715de5e128e987581a722293bb61289",
+      "bytes": 31693
+    },
+    {
+      "path": "product/scripts/boundary-score.py",
+      "sha256": "b1537782b93bc1a3dac64e8a097e786abd01b752af173a26acabdc7975edcd3c",
+      "bytes": 12627
+    },
+    {
+      "path": "product/scripts/claude-obsidian.py",
+      "sha256": "34f3030da4a0ebc223a5dfba7f7180638d08dffa3d044be33fa72234866900c2",
+      "bytes": 357
+    },
+    {
+      "path": "product/scripts/contextual-prefix.py",
+      "sha256": "2c0244bbe0a33f694f47c7e97933e285c2e3ed97001a7ae95eff5e3b27872f65",
+      "bytes": 37586
+    },
+    {
+      "path": "product/scripts/detect-transport.sh",
+      "sha256": "5cee4d29099701a081d262f90de0c0c68e57b2fbbb058a47527e09a92293e663",
+      "bytes": 17194
+    },
+    {
+      "path": "product/scripts/rerank.py",
+      "sha256": "744043d5a3b975237181e3c7273e733b42a3f82774f7f2e3f05ece6a5cc4beaf",
+      "bytes": 19960
+    },
+    {
+      "path": "product/scripts/retrieve.py",
+      "sha256": "4ff0584c351239c63da5eb8324ac81279b5d90471629a5a77b4f5f4cfb4251fd",
+      "bytes": 13936
+    },
+    {
+      "path": "product/scripts/tiling-check.py",
+      "sha256": "8f184015be341950e989df6f149513a67a844996eefad0e8083ebe33ca57ceec",
+      "bytes": 20328
+    },
+    {
+      "path": "product/scripts/wiki-lock.sh",
+      "sha256": "3bfc9bd31dea36e60855877de12fcbd7a20ac79ea229a5d6a4fd1a681f840d02",
+      "bytes": 793
+    },
+    {
+      "path": "product/scripts/wiki-mode.py",
+      "sha256": "f3c990d4ea2a8bec9752ed1474903532eac4a662af7c6e9f16927260596e12a5",
+      "bytes": 14345
+    },
+    {
+      "path": "product/skills/autoresearch/SKILL.md",
+      "sha256": "d65e57a1fca2a02f3fe6d024f6683f61bdf7167abfd3f39c999058476486807f",
+      "bytes": 6170
+    },
+    {
+      "path": "product/skills/autoresearch/references/program.md",
+      "sha256": "d4ac8ac443461723069cad0e4eacf7d303c1bed644bcf76dda24649ec97991c8",
+      "bytes": 3480
+    },
+    {
+      "path": "product/skills/canvas/SKILL.md",
+      "sha256": "8b89862bbe2708280807a40d412f037bfb6416f7c15b191958cadb4a59572bfc",
+      "bytes": 5194
+    },
+    {
+      "path": "product/skills/canvas/references/canvas-spec.md",
+      "sha256": "b6a77a238983fd696f5f6a07d7abab98615be7b6108236f0f7b7912e82544cb2",
+      "bytes": 9001
+    },
+    {
+      "path": "product/skills/defuddle/SKILL.md",
+      "sha256": "4a68941969725839a412e9b4a41ab6e232e4f64cfa6ccecc2aed5986fb1bc6c1",
+      "bytes": 4362
+    },
+    {
+      "path": "product/skills/obsidian-bases/SKILL.md",
+      "sha256": "c3282a03e65c9e4e19d9979e45d48515e831f1cbb5955b5120ebaa8ac3545fe3",
+      "bytes": 4464
+    },
+    {
+      "path": "product/skills/obsidian-markdown/SKILL.md",
+      "sha256": "d22aab8bf2e5631986461f3ded3a747d0beac89f73c04a27ebc837834071b257",
+      "bytes": 4328
+    },
+    {
+      "path": "product/skills/save/SKILL.md",
+      "sha256": "9a61c97fda1392a59def2a7c20c6480a36c0d16ba4709e49b48b25be27666b6f",
+      "bytes": 5061
+    },
+    {
+      "path": "product/skills/think/SKILL.md",
+      "sha256": "876448b42e2835dcf92c67984140e17c41d262161f5409cabddbe1a885c91e31",
+      "bytes": 4613
+    },
+    {
+      "path": "product/skills/wiki-cli/SKILL.md",
+      "sha256": "aa268d6cd87c5d51ed4aeb5d7ed35a8e3e844ba93f283272d36547fe8d5ff9ab",
+      "bytes": 2800
+    },
+    {
+      "path": "product/skills/wiki-fold/SKILL.md",
+      "sha256": "115b4e0f0bd71115052c39a9a3e3d8e6effb7c5b1924ed368bcaef17161a6fd5",
+      "bytes": 4413
+    },
+    {
+      "path": "product/skills/wiki-fold/references/fold-template.md",
+      "sha256": "9542a4a5c9b34f54458d01ac542039e2d893da03dbac061ff99f06d2b13b1111",
+      "bytes": 3312
+    },
+    {
+      "path": "product/skills/wiki-ingest/SKILL.md",
+      "sha256": "5f5b0322d24b80c2b9b8aaa24ddeae7c24c1aa5b52d73e00d93f3d1989ed0ba8",
+      "bytes": 7563
+    },
+    {
+      "path": "product/skills/wiki-lint/SKILL.md",
+      "sha256": "f8a3d5b7d9f77995688e3c7a1ac99eb2cde4d773a652351c47c12516284cfca7",
+      "bytes": 3026
+    },
+    {
+      "path": "product/skills/wiki-mode/SKILL.md",
+      "sha256": "6cf8a0a4066d6d4ec12ebb72ad25bedf8b29aaa2c4a1460b4e4a8984d6d55e0e",
+      "bytes": 3950
+    },
+    {
+      "path": "product/skills/wiki-mode/templates/lyt/atomic-template.md",
+      "sha256": "015b912ff18a2f7c7cf00aaaf72894a2c36c1d44130b9201501491c364d55d40",
+      "bytes": 374
+    },
+    {
+      "path": "product/skills/wiki-mode/templates/lyt/moc-template.md",
+      "sha256": "a282349f22a11b04e42a23740ed8044c6027ea2c9b39feea0a0b880eab103029",
+      "bytes": 736
+    },
+    {
+      "path": "product/skills/wiki-mode/templates/para/area-template.md",
+      "sha256": "358f21f12d094fff96eb630094879ea9e66d7394e72a7db6abb15c6c9ae4f2ad",
+      "bytes": 516
+    },
+    {
+      "path": "product/skills/wiki-mode/templates/para/project-template.md",
+      "sha256": "82b92d9b91db4295e0f69710f8641e7d69af6654e561210b425b1c7d504a0cb5",
+      "bytes": 458
+    },
+    {
+      "path": "product/skills/wiki-mode/templates/para/resource-template.md",
+      "sha256": "07ac35a2247032da7fd1b82af1e0489b158d9924af23e7c8f4f51736e78a2f9f",
+      "bytes": 472
+    },
+    {
+      "path": "product/skills/wiki-mode/templates/zettel/atomic-template.md",
+      "sha256": "3d59bbba5940a3ab7f0a58234a43426268c11c2f1abfa8b707147b46a2a01547",
+      "bytes": 671
+    },
+    {
+      "path": "product/skills/wiki-query/SKILL.md",
+      "sha256": "998fc40ad8ddf272c0bd8c9bf4225cb25c38a1a65c91bff01574b21b15a21c6c",
+      "bytes": 4506
+    },
+    {
+      "path": "product/skills/wiki-retrieve/SKILL.md",
+      "sha256": "c4f7ff668ddcaff1a2288659da096c2c5b504202266da8513b4922a3adf3fe4e",
+      "bytes": 6117
+    },
+    {
+      "path": "product/skills/wiki/SKILL.md",
+      "sha256": "87e90865b89b984e5c69ba45dc4b1d0e1b61d5c9361f1f2fc97e4f3101733088",
+      "bytes": 5392
+    },
+    {
+      "path": "product/skills/wiki/references/css-snippets.md",
+      "sha256": "1b493d6b601a2ebc8ace6db75acfa84663ecfb8633f2a1b93da874793615f625",
+      "bytes": 4399
+    },
+    {
+      "path": "product/skills/wiki/references/frontmatter.md",
+      "sha256": "8c2adb0feeaddfe13d6fcc05ba0daa477ca129eade00f24d7c63d96dc9765eaf",
+      "bytes": 2322
+    },
+    {
+      "path": "product/skills/wiki/references/git-setup.md",
+      "sha256": "8fb1229794dc54245973f1708b70bdd4b87623644cec5d605a6a1dad0950430e",
+      "bytes": 2576
+    },
+    {
+      "path": "product/skills/wiki/references/install-modes.md",
+      "sha256": "51b0ce8e1f86b790dc62200fd9d7e71eaa8b6508e780982c10c301daf8b19b91",
+      "bytes": 1914
+    },
+    {
+      "path": "product/skills/wiki/references/mcp-setup.md",
+      "sha256": "56353117c309c6d7ea65128a66885d29a3a34c96b2c974c9f4e8785b255a718a",
+      "bytes": 1900
+    },
+    {
+      "path": "product/skills/wiki/references/modes.md",
+      "sha256": "affecc6cc55d8344593d846ef94a72baec4faacdb654c0d31721176779926eca",
+      "bytes": 3127
+    },
+    {
+      "path": "product/skills/wiki/references/operation-transactions.md",
+      "sha256": "23b6aba0e28b0cdc46f11910a4b6e4ba52b6150b9daa499490d71d6a1e8d8c1f",
+      "bytes": 6186
+    },
+    {
+      "path": "product/skills/wiki/references/plugins.md",
+      "sha256": "696f9d3a44c76e4817e0b8698f0d7e8def098cabcb4086f067696d3288c05dc4",
+      "bytes": 2140
+    },
+    {
+      "path": "product/skills/wiki/references/provenance.md",
+      "sha256": "f4bc7478299c73e0f624200940eefa63cf6784f718ef4f60d50ca2c173613a2f",
+      "bytes": 2579
+    },
+    {
+      "path": "product/skills/wiki/references/rest-api.md",
+      "sha256": "79179ede8e8b8279ac0ec9982c616b86b548428edf14175e86c0dd02e5932ffb",
+      "bytes": 1428
+    },
+    {
+      "path": "product/templates/vault/.gitignore",
+      "sha256": "0d62dd96ce7a511d2f0154b6373b7a0bfc74b7985c2342af9357751b9fba42dd",
+      "bytes": 351
+    },
+    {
+      "path": "product/templates/vault/.obsidian/app.json",
+      "sha256": "b8c736f8900e4d28ead438125440572f32f5a475dd094ba7155b0879dc253c4b",
+      "bytes": 65
+    },
+    {
+      "path": "product/templates/vault/.obsidian/appearance.json",
+      "sha256": "d0bd766999b3bb8d45bdb5997916d82c51123c295599ff6a5db39ba40618bd7a",
+      "bytes": 53
+    },
+    {
+      "path": "product/templates/vault/.obsidian/graph.json",
+      "sha256": "574d00b8e5c2e16724678023c50a85e727af9067839f8612c55958e525f90c99",
+      "bytes": 101
+    },
+    {
+      "path": "product/templates/vault/.obsidian/snippets/vault-colors.css",
+      "sha256": "908fd97fabd94e989cc979605bb7b17b4da33c409e4846fd701780aea53107fd",
+      "bytes": 620
+    },
+    {
+      "path": "product/templates/vault/.raw/.manifest.json",
+      "sha256": "3061feca9f7973930654de66ebf3bb0959e23783f0129ce899634c91e2c050fb",
+      "bytes": 132
+    },
+    {
+      "path": "product/templates/vault/inbox/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1
+    },
+    {
+      "path": "product/templates/vault/wiki/hot.md",
+      "sha256": "111cfcce3e5f72d9475cf675528112741703ee82d7f8508ec520f38f5ea2378d",
+      "bytes": 398
+    },
+    {
+      "path": "product/templates/vault/wiki/index.md",
+      "sha256": "cf768cf5e8af8118c2e3b4ab1ec3e8466b6c4a12a8800ec8bc5649f45ef634b6",
+      "bytes": 374
+    },
+    {
+      "path": "product/templates/vault/wiki/log.md",
+      "sha256": "1f8415ce27cf5320306aebe19eba0810503270187841d2b287a802d80eb429e6",
+      "bytes": 187
+    },
+    {
+      "path": "product/templates/vault/wiki/overview.md",
+      "sha256": "f6d4c76ec687b0124397280089d004226c530a127f33de31c77feb1d2c784b23",
+      "bytes": 226
+    },
+    {
+      "path": "product/tests/fixtures/capture/sample.md",
+      "sha256": "975c85ff2a6149ef82c8c8ec75039da1899785771fbf73afaa48f3297fd96e00",
+      "bytes": 117
+    },
+    {
+      "path": "product/tests/fixtures/capture/sample.pdf",
+      "sha256": "b6a48cb88c70887bd99c9120292e72764d368433655388783b7fc77578b23a35",
+      "bytes": 67
+    },
+    {
+      "path": "product/tests/fixtures/contracts/valid/config/capabilities.json",
+      "sha256": "8ee550b88970c539e5fcf4ced67e83cb38d6991ce64fef335681bdc5df6a57b4",
+      "bytes": 1036
+    },
+    {
+      "path": "product/tests/fixtures/contracts/valid/config/product-contract.json",
+      "sha256": "8515b5e23cd9365115f6f4246a1520177f1521a7ccfcc7953a0e7eebf86a76c2",
+      "bytes": 1237
+    },
+    {
+      "path": "product/tests/fixtures/contracts/valid/skills/example/SKILL.md",
+      "sha256": "8e4040fed59249a1629989b2c7d9adc0b7f460d8ab1fd69bee5b945516a60437",
+      "bytes": 136
+    },
+    {
+      "path": "product/tests/fixtures/forward/ingest-source.md",
+      "sha256": "f8b902f02235cfcfeff5a06a12a96f4dfd39d8d010ec209bbf9741260941f500",
+      "bytes": 627
+    },
+    {
+      "path": "product/tests/fixtures/forward/query-evidence.md",
+      "sha256": "c8ad7d5452ba8b172c1bf1437e98306ce49f48d963b7fa5aa0e1830489b6f9b6",
+      "bytes": 602
+    },
+    {
+      "path": "product/tests/fixtures/forward/query-index.md",
+      "sha256": "35c89c8f1f97836adff2f80b729343f0bb73b18ee411df5b6568e023965ad154",
+      "bytes": 434
+    },
+    {
+      "path": "product/tests/fixtures/forward/scenarios.json",
+      "sha256": "212ed7ac6e1d022b5fde3e31b744299ea6d2f5f9ca4d592160c71338b140f214",
+      "bytes": 1845
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/.vault-meta/lint-allowlist.json",
+      "sha256": "4bfe652a3747c7382fcad972e87317262de142ce0775ca5df4623926483e10ad",
+      "bytes": 52
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/assets/picture.txt",
+      "sha256": "4f48615a15a2a72318673a0edd730a6089c3843353b2b8f079ec711ac80c24ea",
+      "bytes": 33
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/concepts/Alpha.md",
+      "sha256": "fec495d0c5a220ea0d145b4b8d00127a5054c09b36185c3aadc65960d847713c",
+      "bytes": 324
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/concepts/Beta.md",
+      "sha256": "9484ec5305ab76fb5ac8652ec684f5541d4a1e6162badd5c9e8232abb50ee04a",
+      "bytes": 251
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/concepts/Empty Section Page.md",
+      "sha256": "b75d3446af879f718b1b0b55d06cc86741485667b608b6eb4af638f61570e0e8",
+      "bytes": 393
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/concepts/Missing Frontmatter.md",
+      "sha256": "fc186e6b29c178cc7ba9077b9e1d24e123682a9f42c8d73020aa8c7d2907ae25",
+      "bytes": 72
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/concepts/Orphan.md",
+      "sha256": "4f4ea42c9864ebbd3dd6b46b5b335545e3ec4496b6c2b4fef1dbde57f284465d",
+      "bytes": 147
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/concepts/Shared.md",
+      "sha256": "e285571e3a10770f6ae8c8fe0ef023b8de82ca175b003a9995c8a0eef1cf3858",
+      "bytes": 186
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/entities/Shared.md",
+      "sha256": "8e5d30926c6cf137fc9cc244605bc2f6f0b80a00bfb7df5ba736df84b2f41eaa",
+      "bytes": 182
+    },
+    {
+      "path": "product/tests/fixtures/lint/vault/wiki/index.md",
+      "sha256": "bf69bc94267653c49a88366a467462a33f6678c36a1b3fdc97a7cd83a84e2387",
+      "bytes": 451
+    },
+    {
+      "path": "product/tests/fixtures/migration/legacy-manifest.json",
+      "sha256": "e1ec732ab2d93a794168a420c8cc9efcd2f0d9f2ae03f5abc4cf5d61fac6e720",
+      "bytes": 281
+    },
+    {
+      "path": "product/tests/fixtures/release/public/README.md",
+      "sha256": "b8f0119f15d73313015d86580666b3bca153393a15851036c1283a2d470efc06",
+      "bytes": 74
+    },
+    {
+      "path": "product/tests/fixtures/setup/custom-app.json",
+      "sha256": "5b2290e67124654d7d2d1eeebcb565f6eb2d314b4651fc00308a2349a13006bd",
+      "bytes": 108
+    },
+    {
+      "path": "product/tests/fixtures/setup/excalidraw-manifest.json",
+      "sha256": "17876ef4484669dce79909f10e6c972bd084dc912574151fd0182d38c37a10cb",
+      "bytes": 117
+    },
+    {
+      "path": "product/tests/test_allocate_address.sh",
+      "sha256": "bb55bb7acebdc9ba4b6f70a953886194e44a5381d32843bfc54973b468d6ea74",
+      "bytes": 840
+    },
+    {
+      "path": "product/tests/test_benchmark_tools.py",
+      "sha256": "98603059f7c1390a6168c9c44a56f5f5d68cfd23c197894060a04b666653d9d2",
+      "bytes": 6199
+    },
+    {
+      "path": "product/tests/test_bm25_cache_delete_scope.py",
+      "sha256": "e988a1811f6b42925abc1710e8ffb3fc779fa3bfceaa886ec728a9df7861c5c8",
+      "bytes": 3182
+    },
+    {
+      "path": "product/tests/test_bm25_index.py",
+      "sha256": "4f2d7368d73cc94e7fa4799637043ca727528a240072c97f71dc68f2bd0c4aff",
+      "bytes": 38184
+    },
+    {
+      "path": "product/tests/test_boundary_score.py",
+      "sha256": "11264ef2cbaa51eb57d4709e580cdd943291a4cb0e248abc9b35232d644240a5",
+      "bytes": 11517
+    },
+    {
+      "path": "product/tests/test_capture.py",
+      "sha256": "af75f0d7c4ad50266cc04170bed462229a320a6a7bc5d4e25d74a990328c97c2",
+      "bytes": 44833
+    },
+    {
+      "path": "product/tests/test_checkpoint.py",
+      "sha256": "c8c730685f06dc24f3c549ef3bf4dfef4b0efa5b7a408263a148a758e7ae8f8b",
+      "bytes": 20280
+    },
+    {
+      "path": "product/tests/test_cli_approval.py",
+      "sha256": "b18ba6035cff0d0548aebb2ded8c575d41de1268dee815a43bee8335ab207aff",
+      "bytes": 13076
+    },
+    {
+      "path": "product/tests/test_cli_mode.py",
+      "sha256": "51014c5cfb6da7e26f0c38176bac02d28682c449a55fc5e1a70cfaecea34c6ad",
+      "bytes": 8419
+    },
+    {
+      "path": "product/tests/test_concurrent_write.sh",
+      "sha256": "58c950ee30c83b816fa3566c0aa3ce63bb8e6f829eeecfaf2175a8862011717f",
+      "bytes": 4598
+    },
+    {
+      "path": "product/tests/test_contextual_prefix.py",
+      "sha256": "7bb992b4285b76eb77e6237f45c21a1517f1afc4c10e734543dd329f52f8d6d3",
+      "bytes": 25723
+    },
+    {
+      "path": "product/tests/test_contracts.py",
+      "sha256": "11329e5d5d10b68439ccb585af66c538166f9121d34c90e20424fde023814162",
+      "bytes": 18264
+    },
+    {
+      "path": "product/tests/test_detect_transport.py",
+      "sha256": "8b9b89d1253b203acf38abb2c5869383d2daed582b0b1296fbc73b4e3fa89a85",
+      "bytes": 18790
+    },
+    {
+      "path": "product/tests/test_distribution_vaults.py",
+      "sha256": "d30c9049b57e16ff38235fbe41b3918bf1c6c26cde844a6d20a6af281550ffc4",
+      "bytes": 2514
+    },
+    {
+      "path": "product/tests/test_extensions.py",
+      "sha256": "9c7e5ea0ae44be1e67baf3c652986a13aba7c4eaff200049ecd044edbcbab9c9",
+      "bytes": 2340
+    },
+    {
+      "path": "product/tests/test_gates.py",
+      "sha256": "3e41eb235439603cc1ad84688bdb60fa74b5c45d6ef72cc488cd0e2416db49d5",
+      "bytes": 1739
+    },
+    {
+      "path": "product/tests/test_hermes_adapter.py",
+      "sha256": "1c37650066c20ace60851d899a6d5caa33d6742a26861db8bc6b1392c839299c",
+      "bytes": 4285
+    },
+    {
+      "path": "product/tests/test_hermes_skill_port.py",
+      "sha256": "20937f1e0c1dcaccfc409ba67469e3456066bacf119e2039d171f5d57587dd34",
+      "bytes": 6648
+    },
+    {
+      "path": "product/tests/test_hermes_windows_bm25.py",
+      "sha256": "afd65c40e664aa8e99e5135bf3ffe81dbdfaa4764a29e8387fb0384b92d16faf",
+      "bytes": 12750
+    },
+    {
+      "path": "product/tests/test_hermes_windows_write.py",
+      "sha256": "0ed09dab1037c53d4f3b88cb51c2cbb7bf8da642c950ce937cb798203fc51fd7",
+      "bytes": 49495
+    },
+    {
+      "path": "product/tests/test_hooks.py",
+      "sha256": "98064cbed515efbe786dccc246940288e40ad37ed267d6e1a7bc87a93ad9c5ed",
+      "bytes": 9701
+    },
+    {
+      "path": "product/tests/test_installed_tree_boundary.py",
+      "sha256": "a3dc89337bb48f75641834617f07d635fb620762eebb028873cdc93b5f700a80",
+      "bytes": 10317
+    },
+    {
+      "path": "product/tests/test_knowledge_contracts.py",
+      "sha256": "93f7f1051a248bed122356f30d5e678285110277a0bb4651983d891d47e0f48b",
+      "bytes": 11154
+    },
+    {
+      "path": "product/tests/test_ledgers.py",
+      "sha256": "1403d9a16131be6c521586f75f54baa54e4b6e4425adae8c79908ff65f09469c",
+      "bytes": 46988
+    },
+    {
+      "path": "product/tests/test_legacy_lock.py",
+      "sha256": "caea67d63c1e54d81479096cc0999c55d77070a52d676344e0cef198662c8b7b",
+      "bytes": 7439
+    },
+    {
+      "path": "product/tests/test_lint_engine.py",
+      "sha256": "594c5017abe07d807121267f5cfde1047a7df16447f373bb31a154753f8b96ed",
+      "bytes": 29070
+    },
+    {
+      "path": "product/tests/test_package_validation.py",
+      "sha256": "8e05d363daf58c5c48136283471968ea8839444a9d35d03051dfae04ed0ffc25",
+      "bytes": 15480
+    },
+    {
+      "path": "product/tests/test_paths.py",
+      "sha256": "1a5c4c4915fefac5ca2ea4569bc909b5fddf63347ad8e6259a6b5e61d20a35d9",
+      "bytes": 10424
+    },
+    {
+      "path": "product/tests/test_release.py",
+      "sha256": "a1953341b61b90c8980e0d49b0af72ce54ab9698dfc108855b045a63e6667e87",
+      "bytes": 36089
+    },
+    {
+      "path": "product/tests/test_retrieve.py",
+      "sha256": "0220c4b1e8e19dfc66555a41729ad9095c3f300cab2f8336806b116558c142cc",
+      "bytes": 47364
+    },
+    {
+      "path": "product/tests/test_setup_multi_agent.py",
+      "sha256": "61a29b59601baa318729271b532b55f4bb13459b93c16cfac386495dbb58d2d0",
+      "bytes": 5667
+    },
+    {
+      "path": "product/tests/test_setup_retrieve.py",
+      "sha256": "b0f714dfd23b239f8da44e67fd78857486b56a0d376bc694bdd605cf56158c50",
+      "bytes": 2696
+    },
+    {
+      "path": "product/tests/test_setup_vault.py",
+      "sha256": "f8fd563ac33d0660b5852b9d52bf6554ac315cad4674235dad300e65a646566c",
+      "bytes": 13936
+    },
+    {
+      "path": "product/tests/test_setup_wrappers.py",
+      "sha256": "2f83412d4dd808648f5b0370e67e59b86acb381534acb2e620ba7cbc8844c13d",
+      "bytes": 7952
+    },
+    {
+      "path": "product/tests/test_tiling_check.py",
+      "sha256": "d66e6bf482b16ed108cd0ef02a8f0315a853c5486d3a751eabfbbbf9187ef7c4",
+      "bytes": 8169
+    },
+    {
+      "path": "product/tests/test_transaction.py",
+      "sha256": "0a65f6d053f026a1487af3d7296233f81b81be84a246b15bc725a3841c7e6ff7",
+      "bytes": 101499
+    },
+    {
+      "path": "product/tests/test_vault_ops.py",
+      "sha256": "9f5ac6452ee5422742d20dda0d5e4e6b0f295927dc545cae64500b468dbe6c5b",
+      "bytes": 3879
+    },
+    {
+      "path": "product/tests/test_vault_root_separation.py",
+      "sha256": "182c907b1d8f5e8fa160bed9da8edd33716898f9caaa00a57155e185c2daddac",
+      "bytes": 17279
+    },
+    {
+      "path": "product/tests/test_wiki_lock.sh",
+      "sha256": "8e05bdfa9ef177a109453b17894748b75498b303311fb1b4709ce3f379bbafbd",
+      "bytes": 16939
+    },
+    {
+      "path": "product/tests/test_wiki_mode.py",
+      "sha256": "036219c9f047af36f3182be2a8457a838e0296fd78340c4cbc96774cacad5353",
+      "bytes": 23545
+    },
+    {
+      "path": "product/tests/test_windows_compat.py",
+      "sha256": "eefda3c96ff713be9d6998f929c7eb992f29417588123752d457255ecf59ede8",
+      "bytes": 19455
+    }
+  ]
+}
