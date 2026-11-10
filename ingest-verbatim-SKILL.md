@@ -23,6 +23,16 @@ Read the setup-registered absolute `INGEST_REGISTRY_PATH` with `read_file`, then
 
 For registry 3.4 require common gates **A1, A2, A3, A4, A5R, A6, A7, A8**; for registry 3.3 retain **A1, A2, A3, A4, A5a, A6, A7, A8**. Require applicable acquisition evidence in either version. Treat this skill and core as a contract, not a working engine. Do not substitute generic file writes for native guards. Use only existing `inbox/` and `Clippings/`; modes come from commands only. Follow the core for original authority, actual-state recovery, immutable raw, destination routing, exact preconditions, scope checks, proof-bound cleanup, lint and lifecycle reporting.
 
+## Local persisted-message capture
+
+For same-request pasted UTF-8 text followed by an explicit ingest command, this installation also supports `hermes_persisted_user_message` acquisition through the existing typed buffer path. It is NOT a live Telegram event or transport-authentication claim.
+
+Use the exact installed reader `C:/Users/rahmazaki.adam/AppData/Local/hermes/scripts/capture_hermes_message.py::read_source`; verify its SHA256 against registry `observed_components.persisted_user_message_capture.reader_sha256`. Query the canonical default-profile Hermes `state.db` read-only to resolve ONLY the explicitly supplied/referenced user message in the actual conversation. Require an unambiguous real internal row ID, session/chat/user/thread binding, role=user, active=1, original full-message SHA256, and exact disjoint whole-source prefix/command suffix spans. No unrelated history, other profiles, assistant summaries or model-retyped source. Internal Hermes row IDs are NOT Telegram message/update IDs; leave unavailable native IDs absent.
+
+Bind a callable re-reader of that exact selection into `claude_obsidian.hermes_ingest_buffer_context.consume_persisted_buffer(source_reader=...)`. This factory retains the genuine source bytes and rechecks the canonical row during preparation. Use its source, input/message identities and normalized `command_bytes` in the typed request, with the context as `trusted_buffer_context`. The original command remains in the retained source proof; `ingest verbatim` normalizes to canonical `ingest` without changing source bytes or choosing scope from content. Retain received-text fidelity evidence and permanent `hermes-session://<session>/messages/<row>` locator in the scoped external report alongside raw/page mappings.
+
+Do not fabricate `CurrentInput`, native Telegram update IDs, file identities or a `TrustedBufferContext` constructor. Do not weaken single-link/file-pin guards for GDrive. No materialization into inbox is required for this buffer route. Keep the original message and any earlier captured staging snapshot untouched; cleanup stays OFF. If exact canonical content/bindings are missing or change, HOLD. The task-specific `ingest_captured_hermes_message.py` runner is NOT a generic latest-message dispatcher: never replay its completed request, operation ID, page path or source selection for another input.
+
 ## Content procedure
 
 1. Freeze the exact requested scope and byte baselines; reject unsupported/control-bearing or truncated input untouched. Hold missing routes/capabilities before any capture or content mutation.
