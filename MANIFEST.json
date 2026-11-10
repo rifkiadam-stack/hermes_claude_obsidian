@@ -1,0 +1,18 @@
+{
+  "ingest-core.md": {
+    "path": "C:\\Users\\rahmazaki.adam\\AppData\\Local\\hermes\\skills\\second-brain\\_shared\\ingest-core.md",
+    "sha256": "cab01c7dd62304165a1758c6b96e844cdc241ba66830849f6bd9a49a2aab3e53"
+  },
+  "ingest-verbatim-SKILL.md": {
+    "path": "C:\\Users\\rahmazaki.adam\\AppData\\Local\\hermes\\skills\\second-brain\\ingest-verbatim\\SKILL.md",
+    "sha256": "96b00f6d83de2f08b9fc8f24a669a9e3d969ee18ed76809903fddb411456a66a"
+  },
+  "ingest-rapikan-SKILL.md": {
+    "path": "C:\\Users\\rahmazaki.adam\\AppData\\Local\\hermes\\skills\\second-brain\\ingest-rapikan\\SKILL.md",
+    "sha256": "e12189db1264b9e6493b340e6261fe0c2f5ce47624accfe81a1f04e05d05b8f7"
+  },
+  "ingest-transkrip-SKILL.md": {
+    "path": "C:\\Users\\rahmazaki.adam\\AppData\\Local\\hermes\\skills\\second-brain\\ingest-transkrip\\SKILL.md",
+    "sha256": "6a5fc1dc60dc49f98eaa4f956a930fe90c65e7ceb570877ec5f1dff98ed63238"
+  }
+}
