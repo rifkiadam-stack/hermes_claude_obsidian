@@ -52,6 +52,9 @@ EXPECTED = {
     "obsidian-bases": (["wiki", "obsidian-markdown"], ("base",)),
     "canvas": (["wiki", "save"], ("canvas",)),
     "think": (["save"], ("second brain",)),
+    "second-brain-native-windows": (["wiki", "wiki-ingest", "wiki-retrieve", "wiki-lint"], ("vault", "windows")),
+    "second-brain-ingest-operations": (["wiki-ingest", "second-brain-native-windows", "wiki-lint"], ("ingest", "windows")),
+    "second-brain-clippings-ingest": (["wiki-ingest", "second-brain-native-windows", "wiki-lint"], ("clippings", "ingest")),
 }
 
 FORBIDDEN_IN_THINK = ("architecture", "postmortem", "debugging", "planning")

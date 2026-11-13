@@ -139,3 +139,22 @@ Before applying, pause once: observe existing state, verify the vault selection
 and evidence, then choose the smallest reversible operation that satisfies the
 request. Afterward, report uncertainty and the next useful improvement without
 performing it automatically.
+
+
+## Local native-Windows compatibility (rollback exception)
+
+The workflow above is restored from GitHub main 80470b8. Resolve the existing
+product at `<PRODUCT_ROOT>`
+and the existing vault at `<VAULT>`. Never move the vault.
+On native Windows, use the existing `second-brain-native-windows` compatibility
+skill: `inspect_operation` then `execute_operation` from
+`claude_obsidian.hermes_windows_write`, not the POSIX transaction CLI or direct
+file-tool writes. Keep immutable raw, hash preconditions, provenance and lint.
+Routine supplied-source ingest is authorized by the request: scope-check
+internally and apply once; do not add repeated preview/confirmation rounds.
+Use the supplied text/file directly; no mandatory session-database capture,
+message-ID binding, separate AI reviewer, GUI proof, or correction/audit loop.
+If verbatim is requested, retain source wording in the reading page and raw;
+otherwise follow the requested summary/tidying scope. Do not auto-select a new mode.
+Existing BM25 provisioning remains available through the installed native adapter;
+do not replay completed ingest to repair an index. Report concise actual results.

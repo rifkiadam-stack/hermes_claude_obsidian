@@ -8,6 +8,14 @@ This is a port of [AgriciDaniel/claude-obsidian](https://github.com/AgriciDaniel
 
 ---
 
+## Current source snapshot
+
+For the consolidated local behavior, start with **[Current implementation reference](docs/current-implementation.md)** and [Native Windows adapter](docs/hermes-native-windows.md).
+
+This snapshot includes the 15 base wiki skills plus `second-brain-native-windows`, `second-brain-ingest-operations`, and `second-brain-clippings-ingest`; native BM25 provisioning, its large-index writer, and verified staging cleanup are now included with regression tests. Machine-local paths are replaced with portable configuration/placeholders. No actual user vault content, transcripts, credentials, or profile configuration is included.
+
+The proposed `Sesi/` session-memory extension, split main/history retrieval, and document-type filters are **not implemented** by this snapshot. Root release checksums describe the historical generated release, not this source snapshot.
+
 ## Why this port exists
 
 Upstream claude-obsidian is built around a POSIX transaction engine (`O_DIRECTORY`, `dir_fd`, `flock`, atomic replacement). On native Windows it **fails closed** (`UNSUPPORTED_PLATFORM`) and refuses vault mutations by design. If you use Windows without WSL and want a Hermes-hosted Second Brain, this port provides:
@@ -83,11 +91,9 @@ The Python core (`claude_obsidian/`), deterministic lint, BM25 retrieval, ledger
 Every vault mutation runs through `hermes_windows_write`:
 
 ```
-inspect_operation(vault, operation)      -> approval_sha256
-prepare_operation(vault, operation, approval)   (checkpoint + cooperative lock)
-[external write via Hermes file tools]
-verify_operation(vault, operation, approval)    (hash check, releases lock)
-rollback_operation(vault, operation, approval)  (restores before-images)
+inspect_operation(vault, operation)            -> approval_sha256
+execute_operation(vault, operation, approval)  -> prepare / apply / verify / complete
+rollback_operation(vault, operation, approval) -> authority-bound recovery
 ```
 
 It enforces: protected namespaces (`.git`, `.vault-meta/hermes-windows`), case-fold alias rejection, junction/symlink escape validation, strict finite JSON, bounded reads, streaming lock inspection, retriable lock release, and rollback that refuses unexplained drift. **Reduced guarantee**: single writer, expected-hash recheck, checkpoint, post-write verification, deterministic lint, rollback — it is not the POSIX transaction core. See `docs/hermes-native-windows.md`.

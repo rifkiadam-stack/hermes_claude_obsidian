@@ -124,3 +124,9 @@ python "$RERANK" --vault "$VAULT" "$QUERY" --model nomic-embed-text --peek
 Observe cache readiness and privacy boundaries, think about whether lexical or
 semantic ranking is needed, verify returned paths and source freshness, and
 grow by measuring retrieval misses against a maintained local query set.
+
+
+## Existing native Windows installation
+Use `second-brain-native-windows` for guarded writes and BM25 provisioning.
+Keep the installed core and the existing Google Drive vault; WSL is not required.
+Do not replace the installed native guard with the older repository writer.

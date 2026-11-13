@@ -667,6 +667,185 @@
         "{python}",
         "tests/test_retrieve.py"
       ]
+    },
+    {
+      "id": "second-brain-native-windows",
+      "tier": "extension",
+      "implementation_paths": [
+        "skills/second-brain-native-windows/SKILL.md",
+        "claude_obsidian/hermes_windows_write.py",
+        "claude_obsidian/hermes_windows_bm25.py",
+        "scripts/bm25_provision_native.py",
+        "scripts/second_brain_staging_cleanup.py"
+      ],
+      "read_scope": [
+        "plugin:skills/**",
+        "vault:.raw/**",
+        "vault:.vault-meta/**",
+        "vault:inbox/**",
+        "vault:Clippings/**",
+        "vault:wiki/**"
+      ],
+      "write_scope": [
+        {
+          "pattern": "vault:.raw/**",
+          "access": "create_only"
+        },
+        {
+          "pattern": "vault:.raw/.manifest.json",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:wiki/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:inbox/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:Clippings/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:.vault-meta/**",
+          "access": "runtime"
+        }
+      ],
+      "needs": {
+        "shell": true,
+        "network": false
+      },
+      "transaction_type": "ingest",
+      "confirmation": {
+        "mutation": "operation_scope",
+        "network_egress": "not_applicable",
+        "destructive": "explicit"
+      },
+      "configuration": {
+        "path_requirements": [],
+        "external_commands": []
+      },
+      "verification_command": [],
+      "verification_reason": "Procedural native-Windows helper; run focused native guard, BM25 and cleanup tests separately. No cross-platform end-to-end capability verifier is declared."
+    },
+    {
+      "id": "second-brain-ingest-operations",
+      "tier": "extension",
+      "implementation_paths": [
+        "skills/second-brain-ingest-operations/SKILL.md",
+        "claude_obsidian/hermes_windows_write.py",
+        "scripts/second_brain_staging_cleanup.py"
+      ],
+      "read_scope": [
+        "plugin:skills/**",
+        "vault:.raw/**",
+        "vault:.vault-meta/**",
+        "vault:inbox/**",
+        "vault:Clippings/**",
+        "vault:wiki/**"
+      ],
+      "write_scope": [
+        {
+          "pattern": "vault:.raw/**",
+          "access": "create_only"
+        },
+        {
+          "pattern": "vault:.raw/.manifest.json",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:wiki/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:inbox/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:Clippings/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:.vault-meta/**",
+          "access": "runtime"
+        }
+      ],
+      "needs": {
+        "shell": true,
+        "network": false
+      },
+      "transaction_type": "ingest",
+      "confirmation": {
+        "mutation": "operation_scope",
+        "network_egress": "not_applicable",
+        "destructive": "explicit"
+      },
+      "configuration": {
+        "path_requirements": [],
+        "external_commands": []
+      },
+      "verification_command": [],
+      "verification_reason": "Procedural native-Windows helper; run focused native guard, BM25 and cleanup tests separately. No cross-platform end-to-end capability verifier is declared."
+    },
+    {
+      "id": "second-brain-clippings-ingest",
+      "tier": "extension",
+      "implementation_paths": [
+        "skills/second-brain-clippings-ingest/SKILL.md",
+        "claude_obsidian/hermes_windows_write.py",
+        "scripts/second_brain_staging_cleanup.py"
+      ],
+      "read_scope": [
+        "plugin:skills/**",
+        "vault:.raw/**",
+        "vault:.vault-meta/**",
+        "vault:inbox/**",
+        "vault:Clippings/**",
+        "vault:wiki/**"
+      ],
+      "write_scope": [
+        {
+          "pattern": "vault:.raw/**",
+          "access": "create_only"
+        },
+        {
+          "pattern": "vault:.raw/.manifest.json",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:wiki/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:inbox/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:Clippings/**",
+          "access": "transactional"
+        },
+        {
+          "pattern": "vault:.vault-meta/**",
+          "access": "runtime"
+        }
+      ],
+      "needs": {
+        "shell": true,
+        "network": false
+      },
+      "transaction_type": "ingest",
+      "confirmation": {
+        "mutation": "operation_scope",
+        "network_egress": "not_applicable",
+        "destructive": "explicit"
+      },
+      "configuration": {
+        "path_requirements": [],
+        "external_commands": []
+      },
+      "verification_command": [],
+      "verification_reason": "Procedural native-Windows helper; run focused native guard, BM25 and cleanup tests separately. No cross-platform end-to-end capability verifier is declared."
     }
   ]
 }

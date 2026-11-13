@@ -24,8 +24,13 @@ class HermesAdapterContractTests(unittest.TestCase):
             path.parent.name for path in (ROOT / "skills").glob("*/SKILL.md")
         }
         mappings = {item["upstream"]: item for item in adapter["skills"]}
-        self.assertEqual(15, len(discovered))
-        self.assertEqual(discovered, set(mappings))
+        helpers = {
+            "second-brain-native-windows",
+            "second-brain-ingest-operations",
+            "second-brain-clippings-ingest",
+        }
+        self.assertEqual(discovered, set(mappings) | helpers)
+        self.assertTrue(set(mappings).isdisjoint(helpers))
         self.assertTrue(all(item["treatment"] != "remove" for item in mappings.values()))
 
     def test_adapter_uses_hermes_tools_and_keeps_vault_outside_memory(self) -> None:
@@ -81,19 +86,13 @@ class HermesAdapterContractTests(unittest.TestCase):
         guide = (ROOT / "docs" / "hermes-native-windows.md").read_text(
             encoding="utf-8"
         )
-        self.assertIn("reduced-guarantee", guide)
-        self.assertIn("not equivalent", guide)
+        self.assertIn("reduced", guide)
+        self.assertIn("not the POSIX", guide)
         self.assertIn("inspect_operation", guide)
-        self.assertIn("prepare_operation", guide)
-        self.assertIn("write_file", guide)
-        self.assertIn("patch", guide)
-        self.assertIn(
-            "verify_operation(vault, operation, approved_plan_sha256)", guide
-        )
-        self.assertIn(
-            "rollback_operation(vault, operation, approved_plan_sha256)", guide
-        )
-        self.assertIn("single orchestrator", guide)
+        self.assertIn("execute_operation(vault, operation, approval_sha256)", guide)
+        self.assertIn("Do not manually write", guide)
+        self.assertIn("rollback", guide)
+        self.assertIn("single Hermes orchestrator", guide)
         self.assertIn("Obsidian", guide)
 
 

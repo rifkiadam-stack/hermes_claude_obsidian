@@ -1,93 +1,52 @@
 # Hermes native Windows adapter
 
-This adapter lets one Hermes orchestrator manage a local NTFS Obsidian vault without WSL. It is a **reduced-guarantee** workflow and is **not equivalent** to the upstream POSIX descriptor-pinned transaction engine.
+The native adapter supports a single Hermes orchestrator on a locally accessible Windows vault without WSL. It provides **reduced guarantees**, not the POSIX descriptor-pinned transaction guarantee.
 
-## Guarantee boundary
+## Write lifecycle
 
-The adapter provides:
+1. Read each target and retain its exact bytes/hash or verified absence.
+2. Build one `hermes-native-windows-reduced-v1` operation with inline content, expected hashes, and any read preconditions.
+3. Call `inspect_operation(vault, operation)` and inspect its complete changed-path list and `approval_sha256`.
+4. Call `execute_operation(vault, operation, approval_sha256)`. This owns prepare, apply, and verify; success is `state: complete` after the cooperative lock is released.
+5. Verify source/raw/page/provenance as applicable, then run read-only lint.
 
-- bounded vault-relative paths;
-- expected SHA-256 or verified absence for every target;
-- approval hash bound to the selected vault and exact operation;
-- cooperative single-writer lock for Hermes writers;
-- byte-for-byte before-image checkpoint;
-- post-write hash verification;
-- guarded rollback when targets have no unexplained drift.
-- protected `.git` and Hermes runtime namespaces;
-- portable case-fold/Unicode collision rejection;
-- bounded write, checkpoint, and runtime-state sizes.
-- strict finite JSON for operation and runtime authority records.
-- bounded descriptor-based reads for targets, runtime JSON, and checkpoints;
-- streaming cooperative-lock inspection with immediate rejection of unexpected entries.
+Do not manually write the vault using generic file tools between prepare and verify. Do not call the POSIX transaction apply command on native Windows.
 
-It does not provide:
+## Safety boundary
 
-- protection from non-cooperating writers such as Obsidian or another program;
-- POSIX directory-descriptor pinning;
-- a truly atomic multi-file commit;
-- automatic stale-lock reaping;
-- upstream transaction equivalence.
+The guard provides bounded vault-relative paths and payloads, expected-content checks, checkpoint before-images, post-write verification, protected runtime namespaces, alias/junction checks, and authority-bound rollback. It does **not** provide a truly atomic multi-file commit or protection from non-cooperating writers.
 
-Keep the vault on local NTFS. Do not use this adapter for a shared/network vault or concurrent automated writers.
+Obsidian, other agents, and cloud-sync clients do not automatically honor Hermes locks. Keep managed files locally available, serialize automated writers, and avoid concurrent edits/sync conflicts during apply. Cloud-backed paths are not a guarantee of cross-machine locking. Do not relocate an existing user vault merely to install this package.
 
-## Required workflow
+Use `recover_prepared_operation` only with original operation authority, a dead local owner, and an exact fully-applied state. Partial state or unexplained drift requires safe rollback/investigation. Never manually delete a lock to force progress.
 
-Only a **single orchestrator** may perform canonical writes. `delegate_task` workers remain read-only and return drafts/evidence.
+## Product and vault selection
 
-1. Read every target and record its exact SHA-256 or verified absence.
-2. Build one `hermes-native-windows-reduced-v1` operation.
-3. Call `inspect_operation(vault, operation)` and review the complete changed-path list.
-4. Call `prepare_operation(vault, operation, approved_plan_sha256)` immediately before writing. This rechecks targets, creates before-images, and acquires the cooperative lock.
-5. Apply only the reviewed content through Hermes `write_file` or `patch`. Do not run unrelated writes while the lock exists.
-6. Call `verify_operation(vault, operation, approved_plan_sha256)` with the original authority inputs to verify every after hash and release the lock.
-7. Run deterministic wiki lint after verification while all writers are idle.
-8. If writing or verification fails, call `rollback_operation(vault, operation, approved_plan_sha256)` with the same original authority inputs. Rollback preflights every before-image and refuses unexplained drift instead of overwriting it.
+The product is this checkout; it is not the user's vault. Pass the vault explicitly through `--vault`, or use the existing supported runtime vault configuration. Machine-local configuration and credentials are not distributed by this repository.
 
-## Runtime environment
+The distributed native scripts resolve the product relative to their own location. No personal home directory, mounted drive, account, or live vault contents are required or included.
 
-The Hermes profile `.env` (under the Hermes home directory) supplies two
-variables:
+## Native BM25 provisioning
 
-```text
-HERMES_OBSIDIAN_VAULT=<path-to-your-obsidian-vault>
-HERMES_CLAUDE_OBSIDIAN_CORE=C:/Users/<user>/AppData/Local/hermes/components/claude-obsidian-core
+```bash
+python -B scripts/bm25_provision_native.py --vault <VAULT>
+python -B scripts/retrieve.py --vault <VAULT> "search terms" --top 5 --no-rerank --explain
 ```
 
-- `HERMES_OBSIDIAN_VAULT` is the explicit managed vault path (legacy alias
-  `CLAUDE_OBSIDIAN_VAULT` remains accepted by the core scripts).
-- `HERMES_CLAUDE_OBSIDIAN_CORE` is the installed product root the skills use to
-  resolve `scripts/claude-obsidian.py`. Skills never hard-code machine-local
-  paths; the invoking agent reads this variable.
+The adapter creates synthetic local prefixes without LLM/network egress, reconciles changed/surplus chunks through the guard, and publishes the index through `hermes_windows_bm25`.
 
-Use forward slashes in `.env` values so no shell or dotenv parser interprets a
-backslash escape. Windows `pathlib` and the write guard accept both separators.
+The large-index writer is narrowly limited to `.vault-meta/bm25/index.json`; it is not a general way to bypass transaction payload limits. Chunk mutation and index publication are distinct recoverable lifecycles. Verify the final index and retrieval result, not only the chunk-write message. Exit code `2` from provisioning means unchanged, not failure.
 
-## Concurrent Obsidian edits
+## Verified staging cleanup
 
-Obsidian does not honor the cooperative Hermes lock. Adam should avoid editing target notes during a Hermes write. `prepare_operation` catches changes made before preparation; `verify_operation` catches unexpected final bytes. A small race remains between the final recheck and the external file-tool write, which is why this mode is explicitly reduced-guarantee.
-
-## Runtime state
-
-The adapter stores ignored operational state under:
-
-```text
-.vault-meta/hermes-windows/
-├── write.lock/
-└── operations/<operation-id>/
-    ├── manifest.json
-    ├── operation.json
-    └── before/
+```bash
+python -B scripts/second_brain_staging_cleanup.py --vault <VAULT>
 ```
 
-Do not treat this runtime state as canonical knowledge. Keep normal external backups or local Git in addition to per-operation before-images.
+Run discovery first; inspect CLI help before applying. The adapter accepts legacy/current manifest forms and proves raw hash, ledger identity, page association, an operative archive declaration outside comments/code/metadata, and an exact page-body/raw-byte relationship before deleting an eligible direct child of `inbox/` or `Clippings/`. Accepted-candidate proof hashes are retained together and bound as read preconditions. Until a transformation-specific proof is available, summaries or edited representations remain blocked even when an archive link is present. An explicit ingest request authorizes cleanup of only that verified source. Blocked candidates stay in place; `.raw/` is never a cleanup target.
 
-Runtime JSON is untrusted state. Verification and rollback revalidate its directory chain and compare it with the original operation and approval hash retained by the orchestrator.
+## Runtime artifacts and privacy
 
-## Failure handling
+Locks, checkpoints, operations, chunks, and indexes belong to the selected vault's ignored `.vault-meta/` namespace. They may contain private data and must not be published. Checkpoints are recovery aids, not a substitute for independent backups. Git for user vaults is optional and never enabled automatically.
 
-- Expected hash mismatch: abort and rebuild the draft from current files.
-- Existing cooperative lock: stop; do not delete it automatically.
-- Verification mismatch: keep checkpoint and lock, investigate, then rollback if targets still match known before/after hashes.
-- Lock-release failure: terminal manifest state is reverted to `prepared`; remove only the unexpected cooperative-lock entry after review, then retry verification or rollback.
-- Rollback drift: stop and ask for manual review; never force overwrite.
-- Completed operation: preserve its manifest for audit; cleanup policy is a separate maintenance decision.
+See [current implementation reference](current-implementation.md) for lint and retrieval boundaries, including the not-yet-implemented `Sesi/` design.

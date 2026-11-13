@@ -151,3 +151,20 @@ _attachments/
 # v1.8 methodology mode (host-specific by default; `git add -f` to commit if desired)
 .vault-meta/mode.json
 .vault-meta/mode.*.tmp
+
+# Product checkout is never a live user vault or Hermes profile.
+/wiki/
+/.raw/
+/.vault-meta/
+/.obsidian/
+/inbox/
+/Clippings/
+/Sesi/
+/sessions/
+/profiles/
+/cache/
+/cron/
+/config.yaml
+/state.db*
+/memories/
+.vault-meta/hermes-windows/

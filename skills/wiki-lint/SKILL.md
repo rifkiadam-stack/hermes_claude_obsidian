@@ -81,3 +81,9 @@ Lint itself never applies that transaction and never commits Git.
 Observe the deterministic report, think about root causes rather than finding
 count, verify proposed repairs against current hashes, and grow by improving the
 workflow that produced repeated findings.
+
+
+## Existing native Windows installation
+Use `second-brain-native-windows` for guarded writes and BM25 provisioning.
+Keep the installed core and the existing Google Drive vault; WSL is not required.
+Do not replace the installed native guard with the older repository writer.

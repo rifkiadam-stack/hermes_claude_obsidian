@@ -21,7 +21,7 @@ from pathlib import PurePosixPath
 from typing import Any
 
 from .json_utils import strict_json_loads
-from .paths import is_name_surrogate, is_same_object, read_open_flags
+from .paths import assert_unaliased_directory, is_name_surrogate, is_same_object, read_open_flags
 from .transaction import (
     MAX_TRANSACTION_FILE_BYTES,
     MAX_TRANSACTION_RUNTIME_JSON_BYTES,
@@ -154,6 +154,27 @@ def _current_hash(target: Path) -> str | None:
     )
 
 
+def bounded_target_bytes(
+    vault_root: str | Path, relative: str
+) -> bytes | None:
+    """Read one confined regular target with the transaction file-size bound."""
+
+    vault = Path(vault_root).resolve(strict=True)
+    target = _bounded_target(vault, relative)
+    if not target.exists():
+        return None
+    return _bounded_file_bytes(
+        target, limit=MAX_TRANSACTION_FILE_BYTES, label="target"
+    )
+
+
+def bounded_target_hash(vault_root: str | Path, relative: str) -> str | None:
+    """Hash one confined target without following an unsafe parent chain."""
+
+    data = bounded_target_bytes(vault_root, relative)
+    return sha256_bytes(data) if data is not None else None
+
+
 def _canonical_operation(operation: dict[str, Any]) -> bytes:
     return json.dumps(
         operation,
@@ -173,6 +194,37 @@ def _approval_sha256(vault: Path, operation: dict[str, Any]) -> str:
     return sha256_bytes(_canonical_operation(payload))
 
 
+def _validated_delete_parts(vault: Path, relative: str) -> tuple[str, ...]:
+    """Confine deletes to staging files or generated BM25 chunk records."""
+
+    normalized = PurePosixPath(relative.replace("\\", "/"))
+    parts = normalized.parts
+    staging_delete = (
+        len(parts) == 2
+        and parts[0] in {"inbox", "Clippings"}
+        and normalized.name != ".gitkeep"
+    )
+    bm25_chunk_delete = (
+        len(parts) == 4
+        and parts[:2] == (".vault-meta", "chunks")
+        and bool(parts[2])
+        and re.fullmatch(r"chunk-\d{3,9}\.json", parts[3]) is not None
+    )
+    if not staging_delete and not bm25_chunk_delete:
+        raise OperationValidationError(f"delete path is outside allowed scope: {relative}")
+    try:
+        assert_unaliased_directory(vault)
+        current = vault
+        for part in parts[:-1]:
+            current /= part
+            assert_unaliased_directory(current)
+    except OSError as exc:
+        raise OperationValidationError(
+            f"delete parent path is aliased: {relative}: {exc}"
+        ) from exc
+    return parts
+
+
 def inspect_operation(vault_root: str | Path, operation: dict[str, Any]) -> dict[str, Any]:
     """Validate scope/preconditions and return a review-bound reduced plan."""
 
@@ -183,13 +235,31 @@ def inspect_operation(vault_root: str | Path, operation: dict[str, Any]) -> dict
         raise OperationValidationError("unsupported Hermes Windows operation schema")
     operation_id = _validated_operation_id(operation.get("operation_id"))
     expected = operation.get("expected_hashes")
-    writes = operation.get("writes")
-    if not isinstance(expected, dict) or not isinstance(writes, list) or not writes:
-        raise OperationValidationError("expected_hashes and non-empty writes are required")
-    if len(writes) > MAX_TRANSACTION_WRITES:
-        raise OperationValidationError("operation contains too many writes")
+    read_preconditions = operation.get("read_preconditions", {})
+    writes = operation.get("writes", [])
+    deletes = operation.get("deletes", [])
+    if not isinstance(expected, dict) or not isinstance(read_preconditions, dict) or not isinstance(writes, list) or not isinstance(deletes, list):
+        raise OperationValidationError("expected_hashes, read_preconditions, writes, and deletes must have valid types")
+    if not writes and not deletes:
+        raise OperationValidationError("operation requires at least one write or delete")
+    if len(writes) + len(deletes) > MAX_TRANSACTION_WRITES:
+        raise OperationValidationError("operation contains too many mutations")
     if any(not isinstance(path, str) for path in expected):
         raise OperationValidationError("expected hash paths must be strings")
+    if len(read_preconditions) > MAX_TRANSACTION_WRITES or any(not isinstance(path, str) for path in read_preconditions):
+        raise OperationValidationError("invalid or excessive read preconditions")
+    mutation_key_set: set[tuple[str, ...]] = set()
+    for path in list(expected):
+        mutation_key_set.add(_portable_path_key(vault, path))
+    for path, expected_hash in read_preconditions.items():
+        key = _portable_path_key(vault, path)
+        if key in mutation_key_set:
+            raise OperationValidationError(f"read precondition overlaps mutation path: {path}")
+        if not isinstance(expected_hash, str) or _HASH_RE.fullmatch(expected_hash) is None:
+            raise OperationValidationError(f"invalid read precondition hash: {path}")
+        current = _current_hash(_bounded_target(vault, path))
+        if current != expected_hash:
+            raise ConcurrentDriftError(f"read precondition changed: {path}; expected {expected_hash}, found {current}")
 
     changed_paths: list[str] = []
     seen: set[tuple[str, ...]] = set()
@@ -225,6 +295,26 @@ def inspect_operation(vault_root: str | Path, operation: dict[str, Any]) -> dict
             )
         changed_paths.append(relative)
 
+    for relative in deletes:
+        if not isinstance(relative, str):
+            raise OperationValidationError("each delete path must be a string")
+        _validated_delete_parts(vault, relative)
+        portable_key = _portable_path_key(vault, relative)
+        if portable_key in seen:
+            raise OperationValidationError(f"duplicate mutation path: {relative}")
+        seen.add(portable_key)
+        if relative not in expected:
+            raise OperationValidationError(f"missing expected hash: {relative}")
+        expected_hash = expected[relative]
+        if not isinstance(expected_hash, str) or _HASH_RE.fullmatch(expected_hash) is None:
+            raise OperationValidationError(f"delete requires existing expected hash: {relative}")
+        current = _current_hash(_bounded_target(vault, relative))
+        if current != expected_hash:
+            raise ConcurrentDriftError(
+                f"delete target changed: {relative}; expected {expected_hash}, found {current}"
+            )
+        changed_paths.append(relative)
+
     expected_keys: dict[tuple[str, ...], str] = {}
     for path in expected:
         key = _portable_path_key(vault, path)
@@ -234,7 +324,8 @@ def inspect_operation(vault_root: str | Path, operation: dict[str, Any]) -> dict
                 f"{expected_keys[key]} and {path}"
             )
         expected_keys[key] = path
-    extra = set(expected_keys) - seen
+    mutation_paths = {write["path"] for write in writes} | set(deletes)
+    extra = set(expected_keys) - {_portable_path_key(vault, path) for path in mutation_paths}
     if extra:
         raise OperationValidationError(
             "expected_hashes contains paths not written: "
@@ -277,7 +368,9 @@ def _atomic_json(path: Path, value: dict[str, Any]) -> None:
     os.replace(temporary, path)
 
 
-def _release_lock(lock: Path) -> None:
+def _release_lock(
+    lock: Path, *, expected_owner: dict[str, Any] | None = None
+) -> None:
     """Retire a cooperative lock without recursive deletion."""
 
     retired = lock.with_name(f".released-{os.getpid()}-{time.time_ns()}")
@@ -288,6 +381,10 @@ def _release_lock(lock: Path) -> None:
     try:
         metadata = retired.lstat()
         if is_name_surrogate(metadata):
+            if expected_owner is not None:
+                raise CooperativeLockError(
+                    "retired write.lock is a name surrogate; owner cannot be bound"
+                )
             retired.rmdir()
             return
         if not stat.S_ISDIR(metadata.st_mode):
@@ -301,7 +398,11 @@ def _release_lock(lock: Path) -> None:
         if owner.exists():
             if owner.is_symlink() or not owner.is_file():
                 raise CooperativeLockError("write.lock owner is not a regular file")
+            if expected_owner is not None and _load_json(owner) != expected_owner:
+                raise CooperativeLockError("write.lock owner changed before release")
             owner.unlink()
+        elif expected_owner is not None:
+            raise CooperativeLockError("write.lock owner changed before release")
         retired.rmdir()
     except Exception:
         if retired.exists() and not lock.exists():
@@ -319,6 +420,7 @@ def _finalize_manifest_state(
     *,
     state: str,
     epoch_field: str,
+    expected_owner: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     original = dict(manifest)
     updated = dict(manifest)
@@ -326,7 +428,7 @@ def _finalize_manifest_state(
     updated[epoch_field] = time.time()
     _atomic_json(manifest_path, updated)
     try:
-        _release_lock(lock)
+        _release_lock(lock, expected_owner=expected_owner)
     except Exception:
         _atomic_json(manifest_path, original)
         raise
@@ -386,8 +488,15 @@ def prepare_operation(
         before_root = operation_root / "before"
         manifest_targets: list[dict[str, Any]] = []
         total_checkpoint_bytes = 0
-        for write in operation["writes"]:
-            relative = write["path"]
+        mutations = [
+            {"path": write["path"], "kind": "write", "content": write["content"]}
+            for write in operation.get("writes", [])
+        ] + [
+            {"path": relative, "kind": "delete"}
+            for relative in operation.get("deletes", [])
+        ]
+        for mutation in mutations:
+            relative = mutation["path"]
             target = _bounded_target(vault, relative)
             current = _current_hash(target)
             expected = operation["expected_hashes"][relative]
@@ -432,7 +541,12 @@ def prepare_operation(
                     "path": relative,
                     "before_exists": existed,
                     "before_sha256": current,
-                    "after_sha256": sha256_bytes(write["content"].encode("utf-8")),
+                    "after_sha256": (
+                        sha256_bytes(mutation["content"].encode("utf-8"))
+                        if mutation["kind"] == "write"
+                        else None
+                    ),
+                    "mutation_kind": mutation["kind"],
                 }
             )
         manifest = {
@@ -445,24 +559,23 @@ def prepare_operation(
         }
         _atomic_json(operation_root / "manifest.json", manifest)
         _atomic_json(operation_root / "operation.json", operation)
-        _atomic_json(
-            lock / "owner.json",
-            {
-                "schema": OPERATION_SCHEMA,
-                "operation_id": operation_id,
-                "approval_sha256": approved_plan_sha256,
-                "operation_sha256": sha256_bytes(_canonical_operation(operation)),
-                "pid": os.getpid(),
-                "host": socket.gethostname(),
-                "started_epoch": time.time(),
-            },
-        )
+        owner = {
+            "schema": OPERATION_SCHEMA,
+            "operation_id": operation_id,
+            "approval_sha256": approved_plan_sha256,
+            "operation_sha256": sha256_bytes(_canonical_operation(operation)),
+            "pid": os.getpid(),
+            "host": socket.gethostname(),
+            "started_epoch": time.time(),
+        }
+        _atomic_json(lock / "owner.json", owner)
         return {
             "state": "prepared",
             "operation_id": operation_id,
             "approval_sha256": approved_plan_sha256,
             "checkpoint": str(operation_root),
             "changed_paths": plan["changed_paths"],
+            "owner": owner,
         }
     except Exception:
         if lock.exists():
@@ -507,7 +620,7 @@ def _load_prepared_state(
     vault: Path,
     authority_operation: dict[str, Any],
     approved_plan_sha256: str,
-) -> tuple[Path, Path, dict[str, Any], list[dict[str, Any]]]:
+) -> tuple[Path, Path, dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
     if not isinstance(authority_operation, dict):
         raise OperationValidationError("authority operation must be an object")
     operation_id = _validated_operation_id(authority_operation.get("operation_id"))
@@ -546,24 +659,35 @@ def _load_prepared_state(
     if owner.get("operation_sha256") != operation_hash:
         raise OperationValidationError("lock operation hash does not match operation")
 
-    writes = operation.get("writes")
+    writes = operation.get("writes", [])
+    deletes = operation.get("deletes", [])
     expected_hashes = operation.get("expected_hashes")
     targets = manifest.get("targets")
-    if not isinstance(writes, list) or not writes:
-        raise OperationValidationError("checkpoint writes are invalid")
+    if not isinstance(writes, list) or not isinstance(deletes, list) or (not writes and not deletes):
+        raise OperationValidationError("checkpoint mutations are invalid")
     if not isinstance(expected_hashes, dict) or not isinstance(targets, list):
         raise OperationValidationError("checkpoint targets are invalid")
-    if len(targets) != len(writes):
+    mutations = [
+        {"path": write.get("path"), "kind": "write", "content": write.get("content")}
+        for write in writes if isinstance(write, dict)
+    ] + [
+        {"path": relative, "kind": "delete"}
+        for relative in deletes
+    ]
+    if len(targets) != len(mutations):
         raise OperationValidationError("manifest target count does not match operation")
 
     validated: list[dict[str, Any]] = []
     seen: set[tuple[str, ...]] = set()
-    for write, target_record in zip(writes, targets):
-        if not isinstance(write, dict) or not isinstance(target_record, dict):
+    for mutation, target_record in zip(mutations, targets):
+        if not isinstance(mutation, dict) or not isinstance(target_record, dict):
             raise OperationValidationError("invalid checkpoint target record")
-        relative = write.get("path")
-        content = write.get("content")
-        if not isinstance(relative, str) or not isinstance(content, str):
+        relative = mutation.get("path")
+        kind = mutation.get("kind")
+        content = mutation.get("content")
+        if not isinstance(relative, str) or kind not in {"write", "delete"}:
+            raise OperationValidationError("invalid checkpoint mutation")
+        if kind == "write" and not isinstance(content, str):
             raise OperationValidationError("invalid checkpoint write")
         key = _portable_path_key(vault, relative)
         if key in seen:
@@ -574,7 +698,10 @@ def _load_prepared_state(
             "path": relative,
             "before_exists": before_hash is not None,
             "before_sha256": before_hash,
-            "after_sha256": sha256_bytes(content.encode("utf-8")),
+            "after_sha256": (
+                sha256_bytes(content.encode("utf-8")) if kind == "write" else None
+            ),
+            "mutation_kind": kind,
         }
         if target_record != expected_record:
             raise OperationValidationError(
@@ -582,28 +709,236 @@ def _load_prepared_state(
             )
         _bounded_target(vault, relative)
         validated.append(target_record)
-    if set(expected_hashes) != {write["path"] for write in writes}:
-        raise OperationValidationError("checkpoint expected_hashes do not match writes")
-    return lock, manifest_path, manifest, validated
+    mutation_paths = {write["path"] for write in writes} | set(deletes)
+    if set(expected_hashes) != mutation_paths:
+        raise OperationValidationError("checkpoint expected_hashes do not match mutations")
+    return lock, manifest_path, manifest, validated, owner
+
+
+def _safe_delete_quarantine(operation_root: Path, relative: str) -> Path:
+    """Create and validate the operation-local delete quarantine chain."""
+    parts = PurePosixPath(relative).parts
+    deleted_root = operation_root / "deleted"
+    if deleted_root.exists():
+        try:
+            assert_unaliased_directory(deleted_root)
+        except OSError as exc:
+            raise OperationValidationError(f"delete quarantine is aliased: {exc}") from exc
+    else:
+        deleted_root.mkdir()
+        assert_unaliased_directory(deleted_root)
+    parent = deleted_root
+    for part in parts[:-1]:
+        parent /= part
+        if parent.exists():
+            try:
+                assert_unaliased_directory(parent)
+            except OSError as exc:
+                raise OperationValidationError(
+                    f"delete quarantine parent is aliased: {exc}"
+                ) from exc
+        else:
+            parent.mkdir()
+            assert_unaliased_directory(parent)
+    return parent / parts[-1]
+
+
+def apply_prepared_operation(
+    vault_root: str | Path,
+    authority_operation: dict[str, Any],
+    approved_plan_sha256: str,
+) -> dict[str, Any]:
+    """Apply authority-bound writes/deletes while retaining deleted payloads."""
+    vault = Path(vault_root).resolve(strict=True)
+    _lock, manifest_path, _manifest, targets, _owner = _load_prepared_state(
+        vault, authority_operation, approved_plan_sha256
+    )
+    operation_root = manifest_path.parent
+    try:
+        assert_unaliased_directory(vault)
+        assert_unaliased_directory(vault / ".vault-meta")
+        assert_unaliased_directory(vault / ".vault-meta" / "hermes-windows")
+        assert_unaliased_directory(vault / ".vault-meta" / "hermes-windows" / "operations")
+        assert_unaliased_directory(operation_root)
+    except OSError as exc:
+        raise OperationValidationError(f"delete runtime path is aliased: {exc}") from exc
+    writes_by_path = {
+        item["path"]: item["content"] for item in authority_operation.get("writes", [])
+    }
+    for relative, expected_hash in authority_operation.get("read_preconditions", {}).items():
+        current = _current_hash(_bounded_target(vault, relative))
+        if current != expected_hash:
+            raise ConcurrentDriftError(
+                f"read precondition changed before guarded apply: {relative}; expected {expected_hash}, found {current}"
+            )
+    written: list[str] = []
+    deleted: list[str] = []
+    for target_record in targets:
+        relative = target_record["path"]
+        target = _bounded_target(vault, relative)
+        before_hash = target_record["before_sha256"]
+        current = _current_hash(target)
+        if current not in {before_hash, target_record["after_sha256"]}:
+            raise ConcurrentDriftError(f"target changed before guarded apply: {relative}")
+        if target_record["mutation_kind"] == "write":
+            if current != target_record["after_sha256"]:
+                _atomic_bytes(target, writes_by_path[relative].encode("utf-8"))
+            written.append(relative)
+        else:
+            if current is None:
+                deleted.append(relative)
+                continue
+            if current != before_hash:
+                raise ConcurrentDriftError(f"delete target changed before guarded apply: {relative}")
+            retired = _safe_delete_quarantine(operation_root, relative)
+            if retired.exists():
+                raise OperationValidationError(f"delete checkpoint already exists: {relative}")
+            os.replace(target, retired)
+            if _current_hash(retired) != before_hash or target.exists():
+                raise OperationValidationError(f"delete move verification failed: {relative}")
+            deleted.append(relative)
+    return {
+        "state": "applied",
+        "operation_id": authority_operation["operation_id"],
+        "written_paths": written,
+        "deleted_paths": deleted,
+    }
+
+
+def execute_operation(
+    vault_root: str | Path,
+    authority_operation: dict[str, Any],
+    approved_plan_sha256: str,
+) -> dict[str, Any]:
+    """Prepare, apply, and verify one reviewed operation without lifecycle gaps.
+
+    Apply failures deliberately preserve the prepared checkpoint and lock so the
+    caller can inspect, retry, recover, or roll back without hiding partial state.
+    """
+
+    prepared = prepare_operation(
+        vault_root, authority_operation, approved_plan_sha256
+    )
+    apply_prepared_operation(
+        vault_root, authority_operation, approved_plan_sha256
+    )
+    return verify_operation(
+        vault_root,
+        authority_operation,
+        approved_plan_sha256,
+        expected_owner=prepared["owner"],
+    )
+
+
+def _pid_is_running(pid: int) -> bool:
+    """Probe a local owner PID without signalling it."""
+
+    if isinstance(pid, bool) or not isinstance(pid, int) or pid <= 0:
+        raise OperationValidationError("write.lock owner pid is invalid")
+    if os.name == "nt":
+        import ctypes
+        from ctypes import wintypes
+
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        open_process = kernel32.OpenProcess
+        open_process.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+        open_process.restype = wintypes.HANDLE
+        get_exit_code = kernel32.GetExitCodeProcess
+        get_exit_code.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+        get_exit_code.restype = wintypes.BOOL
+        close_handle = kernel32.CloseHandle
+        close_handle.argtypes = [wintypes.HANDLE]
+        close_handle.restype = wintypes.BOOL
+
+        process_query_limited_information = 0x1000
+        still_active = 259
+        handle = open_process(process_query_limited_information, False, pid)
+        if not handle:
+            error = ctypes.get_last_error()
+            if error == 87:  # ERROR_INVALID_PARAMETER: PID does not exist.
+                return False
+            if error == 5:  # ERROR_ACCESS_DENIED: fail closed as live.
+                return True
+            raise CooperativeLockError(
+                f"cannot determine write.lock owner state: Windows error {error}"
+            )
+        try:
+            exit_code = wintypes.DWORD()
+            if not get_exit_code(handle, ctypes.byref(exit_code)):
+                error = ctypes.get_last_error()
+                raise CooperativeLockError(
+                    f"cannot query write.lock owner state: Windows error {error}"
+                )
+            return exit_code.value == still_active
+        finally:
+            close_handle(handle)
+
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except OSError as exc:
+        raise CooperativeLockError(f"cannot determine write.lock owner state: {exc}") from exc
+    return True
+
+
+def recover_prepared_operation(
+    vault_root: str | Path,
+    authority_operation: dict[str, Any],
+    approved_plan_sha256: str,
+) -> dict[str, Any]:
+    """Finalize a fully-applied prepared operation whose local owner is dead.
+
+    Verification remains authority-bound and checks every target against its
+    expected after-image. Partial or drifted operations retain the lock and
+    prepared state for explicit retry or rollback.
+    """
+
+    vault = Path(vault_root).resolve(strict=True)
+    _lock, _manifest_path, _manifest, _targets, owner = _load_prepared_state(
+        vault, authority_operation, approved_plan_sha256
+    )
+    if owner.get("host") != socket.gethostname():
+        raise CooperativeLockError("cannot recover write.lock owned by another host")
+    pid = owner.get("pid")
+    if _pid_is_running(pid):
+        raise CooperativeLockError("write.lock owner process is still running")
+    return verify_operation(
+        vault,
+        authority_operation,
+        approved_plan_sha256,
+        expected_owner=owner,
+    )
 
 
 def verify_operation(
     vault_root: str | Path,
     authority_operation: dict[str, Any],
     approved_plan_sha256: str,
+    *,
+    expected_owner: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Verify externally applied writes and complete the cooperative operation."""
 
     vault = Path(vault_root).resolve(strict=True)
-    lock, manifest_path, manifest, targets = _load_prepared_state(
+    lock, manifest_path, manifest, targets, loaded_owner = _load_prepared_state(
         vault, authority_operation, approved_plan_sha256
     )
+    if expected_owner is not None and loaded_owner != expected_owner:
+        raise CooperativeLockError("write.lock owner changed before verification")
     operation_id = _validated_operation_id(authority_operation.get("operation_id"))
     for target_record in targets:
         relative = target_record.get("path")
         expected_after = target_record.get("after_sha256")
-        if not isinstance(relative, str) or not isinstance(expected_after, str):
-            raise OperationValidationError("invalid target path/hash in manifest")
+        kind = target_record.get("mutation_kind")
+        if not isinstance(relative, str) or kind not in {"write", "delete"}:
+            raise OperationValidationError("invalid target path/kind in manifest")
+        if kind == "write" and not isinstance(expected_after, str):
+            raise OperationValidationError("invalid write hash in manifest")
+        if kind == "delete" and expected_after is not None:
+            raise OperationValidationError("delete target must have null after hash")
         current = _current_hash(_bounded_target(vault, relative))
         if current != expected_after:
             raise ConcurrentDriftError(
@@ -616,6 +951,7 @@ def verify_operation(
         lock,
         state="complete",
         epoch_field="verified_epoch",
+        expected_owner=loaded_owner,
     )
     return {
         "state": "complete",
@@ -639,7 +975,7 @@ def rollback_operation(
     """Restore a prepared operation when targets have no unexplained drift."""
 
     vault = Path(vault_root).resolve(strict=True)
-    lock, manifest_path, manifest, targets = _load_prepared_state(
+    lock, manifest_path, manifest, targets, loaded_owner = _load_prepared_state(
         vault, authority_operation, approved_plan_sha256
     )
     operation_id = _validated_operation_id(authority_operation.get("operation_id"))
@@ -652,8 +988,13 @@ def rollback_operation(
         relative = target_record.get("path")
         before_hash = target_record.get("before_sha256")
         after_hash = target_record.get("after_sha256")
-        if not isinstance(relative, str) or not isinstance(after_hash, str):
+        kind = target_record.get("mutation_kind")
+        if not isinstance(relative, str) or kind not in {"write", "delete"}:
             raise OperationValidationError("invalid rollback target record")
+        if kind == "write" and not isinstance(after_hash, str):
+            raise OperationValidationError("invalid rollback write hash")
+        if kind == "delete" and after_hash is not None:
+            raise OperationValidationError("invalid rollback delete hash")
         current = _current_hash(_bounded_target(vault, relative))
         if current not in {before_hash, after_hash}:
             raise ConcurrentDriftError(
@@ -710,6 +1051,7 @@ def rollback_operation(
         lock,
         state="rolled-back",
         epoch_field="rolled_back_epoch",
+        expected_owner=loaded_owner,
     )
     return {
         "state": "rolled-back",
