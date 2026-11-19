@@ -14,7 +14,8 @@ This distribution candidate is a sanitized snapshot based on public baseline `2c
 
 1. Keep private sanitizer patterns outside the repository; repository contracts use only general patterns and synthetic test values.
 2. Compare the exact payload and repeat the sanitizer scan after any edits.
-3. Build the deterministic ZIP from a clean candidate worktree and audit the ZIP. The builder generates `RELEASE_MANIFEST.json` and `SHA256SUMS` for the artifact and does not stage, commit, tag, push, or publish.
-4. Review the final Git diff and sidecar metadata before any publication.
+3. Build the deterministic ZIP from a clean candidate worktree and audit it. The verified archive contains **268 files**; its generated `RELEASE_MANIFEST.json` and `SHA256SUMS` are the authoritative release metadata. The builder does not stage, commit, tag, push, or publish.
+4. Refresh the root-level sidecar copies from the audited archive; verify exact byte equality before committing them.
+5. Review the final Git diff and sidecar metadata before any publication.
 
-This verification record covers the source snapshot and tests only. Building or auditing an artifact does not publish it; any push or publication is a separate, explicitly authorized action.
+The sanitized source snapshot, relevant tests, release build, and archive audit have been verified. The artifact is not published; push or publication remains a separate action.
