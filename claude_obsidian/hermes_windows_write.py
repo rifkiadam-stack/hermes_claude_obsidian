@@ -455,10 +455,43 @@ def prepare_operation(
     except TransactionValidationError as exc:
         raise OperationValidationError(f"unsafe Hermes runtime path: {exc}") from exc
     lock = runtime / "write.lock"
-    try:
-        lock.mkdir()
-    except FileExistsError as exc:
-        raise CooperativeLockError("another Hermes writer holds write.lock") from exc
+    owner = {
+        "schema": OPERATION_SCHEMA,
+        "operation_id": operation_id,
+        "approval_sha256": approved_plan_sha256,
+        "operation_sha256": sha256_bytes(_canonical_operation(operation)),
+        "pid": os.getpid(),
+        "host": socket.gethostname(),
+        "started_epoch": time.time(),
+    }
+    if os.name == "nt":
+        # Windows directory rename is non-overwriting: publish a complete,
+        # owner-bearing claim into the shared legacy lock name atomically.
+        claim = runtime / f".write-claim-{os.getpid()}-{time.time_ns()}"
+        claim.mkdir()
+        try:
+            _atomic_json(claim / "owner.json", owner)
+            os.rename(claim, lock)
+        except FileExistsError as exc:
+            if claim.exists():
+                _release_lock(claim)
+            raise CooperativeLockError("another Hermes writer holds write.lock") from exc
+        except Exception:
+            if claim.exists():
+                _release_lock(claim)
+            raise
+    else:
+        # Preserve the historical POSIX mkdir exclusion protocol. POSIX rename
+        # may replace an empty destination directory, so never publish by rename.
+        try:
+            lock.mkdir()
+        except FileExistsError as exc:
+            raise CooperativeLockError("another Hermes writer holds write.lock") from exc
+        try:
+            _atomic_json(lock / "owner.json", owner)
+        except Exception:
+            _release_lock(lock)
+            raise
 
     try:
         operations_root = _safe_directory(
@@ -882,6 +915,154 @@ def _pid_is_running(pid: int) -> bool:
     except OSError as exc:
         raise CooperativeLockError(f"cannot determine write.lock owner state: {exc}") from exc
     return True
+
+
+def recover_interrupted_preparation(
+    vault_root: str | Path,
+    authority_operation: dict[str, Any],
+    approved_plan_sha256: str,
+) -> dict[str, Any]:
+    """Retire an authenticated dead owner before a complete checkpoint exists."""
+    vault = Path(vault_root).resolve(strict=True)
+    plan = inspect_operation(vault, authority_operation)
+    if plan["approval_sha256"] != approved_plan_sha256:
+        raise OperationValidationError("recovery approval does not match original operation")
+    operation_id = plan["operation_id"]
+    try:
+        runtime = _safe_directory(vault, ".vault-meta/hermes-windows", create=False)
+        lock = _safe_directory(vault, ".vault-meta/hermes-windows/write.lock", create=False)
+    except TransactionValidationError as exc:
+        raise OperationValidationError(f"unsafe interrupted-prepare runtime chain: {exc}") from exc
+    assert_unaliased_directory(runtime)
+    assert_unaliased_directory(lock)
+
+    owner = _load_json(lock / "owner.json")
+    expected_owner_fields = {
+        "schema": OPERATION_SCHEMA,
+        "operation_id": operation_id,
+        "approval_sha256": approved_plan_sha256,
+        "operation_sha256": sha256_bytes(_canonical_operation(authority_operation)),
+    }
+    owner_fields = {
+        "schema", "operation_id", "approval_sha256", "operation_sha256",
+        "pid", "host", "started_epoch",
+    }
+    if set(owner) != owner_fields or any(
+        owner.get(key) != value for key, value in expected_owner_fields.items()
+    ):
+        raise CooperativeLockError("write.lock owner is not bound to original operation")
+    if owner.get("host") != socket.gethostname():
+        raise CooperativeLockError("cannot recover remote write.lock owner")
+    if _pid_is_running(owner.get("pid")):
+        raise CooperativeLockError("write.lock owner process is still running")
+    if isinstance(owner.get("started_epoch"), bool) or not isinstance(owner.get("started_epoch"), (int, float)):
+        raise CooperativeLockError("write.lock owner start time is invalid")
+
+    # Operations and operation-specific directories are optional: a process may
+    # die immediately after publishing write.lock. If present, validate every
+    # chain element without creating or removing anything.
+    operations_path = runtime / "operations"
+    operation_root: Path | None = None
+    try:
+        operations_path.lstat()
+    except FileNotFoundError:
+        pass
+    except OSError as exc:
+        raise OperationValidationError(f"cannot inspect operations runtime path: {exc}") from exc
+    else:
+        try:
+            operations_root = _safe_directory(
+                vault, ".vault-meta/hermes-windows/operations", create=False
+            )
+            assert_unaliased_directory(operations_root)
+            operation_path = operations_root / operation_id
+            try:
+                operation_path.lstat()
+            except FileNotFoundError:
+                pass
+            else:
+                operation_root = _safe_directory(
+                    vault,
+                    f".vault-meta/hermes-windows/operations/{operation_id}",
+                    create=False,
+                )
+                assert_unaliased_directory(operation_root)
+        except (OSError, TransactionValidationError) as exc:
+            raise OperationValidationError(
+                f"unsafe interrupted-prepare runtime chain: {exc}"
+            ) from exc
+
+    # A partial manifest/operation can be left by a crash. Strictly parse and
+    # bind each one to the caller's original authority; never treat arbitrary
+    # diagnostics as disposable. A valid pair is a prepared checkpoint and is
+    # deliberately reserved to the normal prepared-operation recovery path.
+    manifest_path = operation_root / "manifest.json" if operation_root else None
+    operation_path = operation_root / "operation.json" if operation_root else None
+    def checkpoint_file_present(path: Path | None) -> bool:
+        if path is None:
+            return False
+        try:
+            path.lstat()
+            return True
+        except FileNotFoundError:
+            return False
+        except OSError as exc:
+            raise OperationValidationError(f"cannot inspect partial checkpoint file: {exc}") from exc
+
+    manifest_present = checkpoint_file_present(manifest_path)
+    operation_present = checkpoint_file_present(operation_path)
+    if operation_present:
+        if _load_json(operation_path) != authority_operation:
+            raise OperationValidationError("partial checkpoint operation differs from authority input")
+    if manifest_present:
+        manifest = _load_json(manifest_path)
+        expected_targets = []
+        mutations = [
+            {"path": write["path"], "kind": "write", "content": write["content"]}
+            for write in authority_operation.get("writes", [])
+        ] + [
+            {"path": relative, "kind": "delete"}
+            for relative in authority_operation.get("deletes", [])
+        ]
+        for mutation in mutations:
+            relative = mutation["path"]
+            before_hash = authority_operation["expected_hashes"][relative]
+            expected_targets.append({
+                "path": relative,
+                "before_exists": before_hash is not None,
+                "before_sha256": before_hash,
+                "after_sha256": (
+                    sha256_bytes(mutation["content"].encode("utf-8"))
+                    if mutation["kind"] == "write" else None
+                ),
+                "mutation_kind": mutation["kind"],
+            })
+        expected_manifest = {
+            "schema": OPERATION_SCHEMA,
+            "operation_id": operation_id,
+            "state": "prepared",
+            "approval_sha256": approved_plan_sha256,
+            "guarantee_level": "reduced",
+            "targets": expected_targets,
+        }
+        if manifest != expected_manifest:
+            raise OperationValidationError("partial checkpoint manifest differs from original operation")
+    if manifest_present and operation_present:
+        # Force full normal checkpoint validation (including before-image files)
+        # before refusing abort; no incomplete recovery path may consume it.
+        _load_prepared_state(vault, authority_operation, approved_plan_sha256)
+        raise OperationValidationError("checkpoint exists; use prepared-operation recovery")
+
+    for relative, before_hash in authority_operation.get("expected_hashes", {}).items():
+        if bounded_target_hash(vault, relative) != before_hash:
+            raise ConcurrentDriftError(f"preparation recovery refuses target drift: {relative}")
+
+    # Preserve any partial before-image diagnostics. The caller retries with a
+    # fresh operation_id; no recursive deletion or diagnostic retirement occurs.
+    assert_unaliased_directory(runtime)
+    lock = _safe_directory(vault, ".vault-meta/hermes-windows/write.lock", create=False)
+    _release_lock(lock, expected_owner=owner)
+    return {"state": "cancelled", "operation_id": operation_id}
 
 
 def recover_prepared_operation(

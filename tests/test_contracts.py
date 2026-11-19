@@ -6,6 +6,7 @@ from __future__ import annotations
 import fnmatch
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -68,6 +69,32 @@ class CanonicalContractTests(unittest.TestCase):
     def test_capability_and_transaction_operation_types_cannot_drift(self) -> None:
         self.assertEqual(OPERATION_TYPES, CORE_TRANSACTION_TYPES)
 
+    def test_memori_guard_publication_payload_uses_portable_paths_and_no_credentials(self) -> None:
+        payload = [
+            ROOT / "claude_obsidian" / name
+            for name in (
+                "memori_guard_mcp.py",
+                "memori_retrieval.py",
+                "memori_validasi.py",
+            )
+        ] + [
+            ROOT / "docs" / "memori-guard.md",
+            ROOT / "docs" / "memori-guard-start.md",
+            ROOT / "docs" / "publication-verification.md",
+        ]
+        absolute_path = re.compile(r"(?i)\b[A-Z]:[\\/](?:Users|Documents and Settings)[\\/][^\s\"'`<>]+")
+        credential = re.compile(
+            r"(?i)\b(?:api[_-]?key|access[_-]?token|refresh[_-]?token|client[_-]?secret)"
+            r"\b\s*[:=]\s*[\"'][A-Za-z0-9_./+=-]{12,}[\"']"
+        )
+        self.assertIsNotNone(absolute_path.search("C:" + "\\" + "Users" + "\\fixture\\vault"))
+        self.assertIsNotNone(absolute_path.search("C:/" + "Users/fixture/vault"))
+        self.assertIsNotNone(credential.search("api" + "_key = " + chr(34) + "synthetic-fixture-secret" + chr(34)))
+        for path in payload:
+            text = path.read_text(encoding="utf-8")
+            self.assertIsNone(absolute_path.search(text), path.relative_to(ROOT))
+            self.assertIsNone(credential.search(text), path.relative_to(ROOT))
+
     def test_canonical_contracts_validate(self) -> None:
         self.assertEqual([], validate_contracts(ROOT))
 
@@ -75,10 +102,8 @@ class CanonicalContractTests(unittest.TestCase):
         document = _read(ROOT / "config" / "capabilities.json")
         contracted = {item["id"] for item in document["capabilities"]}
         discovered = {path.parent.name for path in (ROOT / "skills").glob("*/SKILL.md")}
-        # Every discoverable skill needs a capability contract; helper additions
-        # must not require freezing the inventory to the upstream skill count.
         self.assertEqual(discovered, contracted)
-        self.assertTrue(contracted)
+        self.assertGreaterEqual(len(contracted), 15)
 
     def test_product_contract_locks_privacy_compatibility_and_release_authority(
         self,

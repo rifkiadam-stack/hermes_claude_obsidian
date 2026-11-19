@@ -1,0 +1,3 @@
+# Uji penerimaan memori-guard. Klien MCP stdio ada di mcp_klien.py (pustaka standar),
+# jadi SDK MCP tidak dibutuhkan oleh tes.
+pytest>=8

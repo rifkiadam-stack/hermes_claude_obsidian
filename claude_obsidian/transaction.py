@@ -367,28 +367,49 @@ def _safe_directory(
     normalized, directory = _safe_vault_path(vault_root, relative)
     root = canonical(vault_root)
     cursor = root
+    attempts = 5 if create else 1
     for part in PurePosixPath(normalized).parts:
         cursor = cursor / part
-        if not cursor.exists():
-            if not create:
-                return directory
+        for attempt in range(attempts):
+            if not cursor.exists():
+                if not create:
+                    return directory
+                try:
+                    cursor.mkdir()
+                    _fsync_directory(cursor.parent)
+                except FileExistsError:
+                    # Another writer won the creation race; revalidate it.
+                    pass
+                except OSError as exc:
+                    if attempt + 1 == attempts:
+                        raise TransactionValidationError(
+                            "UNSAFE_RUNTIME_PATH",
+                            f"cannot create runtime directory {relative}: {exc}",
+                        ) from exc
+                    time.sleep(0.002 * (attempt + 1))
+                    continue
             try:
-                cursor.mkdir()
-                _fsync_directory(cursor.parent)
-            except FileExistsError:
-                pass
+                metadata = cursor.lstat()
+                break
+            except FileNotFoundError as exc:
+                # A concurrent creator can remove it from view between the
+                # existence probe and lstat; retry the same strict validation.
+                if attempt + 1 == attempts:
+                    raise TransactionValidationError(
+                        "UNSAFE_RUNTIME_PATH",
+                        f"cannot inspect runtime directory {relative}: {exc}",
+                    ) from exc
+                time.sleep(0.002 * (attempt + 1))
             except OSError as exc:
                 raise TransactionValidationError(
                     "UNSAFE_RUNTIME_PATH",
-                    f"cannot create runtime directory {relative}: {exc}",
+                    f"cannot inspect runtime directory {relative}: {exc}",
                 ) from exc
-        try:
-            metadata = cursor.lstat()
-        except OSError as exc:
+        else:  # pragma: no cover - loop always breaks or raises
             raise TransactionValidationError(
                 "UNSAFE_RUNTIME_PATH",
-                f"cannot inspect runtime directory {relative}: {exc}",
-            ) from exc
+                f"cannot create runtime directory {relative}",
+            )
         if is_name_surrogate(metadata) or not stat.S_ISDIR(metadata.st_mode):
             raise TransactionValidationError(
                 "UNSAFE_RUNTIME_PATH",

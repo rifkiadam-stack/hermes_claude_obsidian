@@ -38,6 +38,33 @@ from .transaction import MAX_TRANSACTION_FILE_BYTES, MAX_TRANSACTION_WRITES, Tra
 
 INDEX_REL = ".vault-meta/bm25/index.json"
 SCHEMA = "hermes-windows-bm25-index-v1"
+REPLACE_RETRIES = 40
+REPLACE_SLEEP_S = 0.025
+
+
+def _replace_with_retry(source: Path, target: Path) -> None:
+    """Atomically replace a target that a concurrent reader may still hold.
+
+    Windows denies ``os.replace`` with WinError 5/32 while another process has
+    the target open without ``FILE_SHARE_DELETE``.  Those handles are
+    short-lived, so a bounded retry removes the transient failure without
+    changing any publication ordering or guarantees.
+    """
+    last_error: OSError | None = None
+    for _ in range(REPLACE_RETRIES):
+        try:
+            os.replace(source, target)
+            return
+        except PermissionError as exc:  # WinError 5 or 32
+            last_error = exc
+        except OSError as exc:
+            if getattr(exc, "winerror", None) not in (5, 32):
+                raise
+            last_error = exc
+        time.sleep(REPLACE_SLEEP_S)
+    if last_error is not None:
+        raise last_error
+    raise OSError("BM25 publication replace failed")
 
 
 def _vault(root: str | Path) -> Path:
@@ -145,7 +172,7 @@ def _restore_before(vault: Path, backup: Path, before_hash: str | None) -> None:
                                    label="BM25 before-image")
         if sha256_bytes(data) != before_hash:
             raise OperationValidationError("BM25 before-image hash mismatch")
-        os.replace(backup, target)
+        _replace_with_retry(backup, target)
     if _current_hash(_bounded_target(vault, INDEX_REL)) != before_hash:
         raise ConcurrentDriftError("BM25 before-image restore failed")
 
@@ -207,7 +234,7 @@ def publish_large_index(vault_root: str | Path, data: bytes,
             raise OperationValidationError("staged BM25 index hash mismatch")
         _check_state(vault, metadata)
         _safe_directory(vault, ".vault-meta/bm25", create=False)
-        os.replace(staged, _bounded_target(vault, INDEX_REL))
+        _replace_with_retry(staged, _bounded_target(vault, INDEX_REL))
         committed = True
         if _current_hash(_bounded_target(vault, INDEX_REL)) != metadata["after_sha256"]:
             # A pathname stage may have changed after verification. Restore the

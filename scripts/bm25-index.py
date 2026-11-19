@@ -735,13 +735,18 @@ def load_index():
         corrupt_index(str(exc))
 
 
-def query(text, top_k=20):
-    idx = load_index()
-    vocab = idx["vocab"]
-    docs = idx["docs"]
-    params = idx["params"]
-    avg_dl = idx["avg_dl"]
-    N = idx["doc_count"]
+def score_index(index, text, top_k=20):
+    """Score one already-validated index snapshot.
+
+    Splitting scoring from ``load_index`` lets a read-only caller pass its own
+    bounded snapshot.  Arithmetic and ordering here are unchanged from the
+    original ``query`` implementation.
+    """
+    vocab = index["vocab"]
+    docs = index["docs"]
+    params = index["params"]
+    avg_dl = index["avg_dl"]
+    N = index["doc_count"]
     k1 = params["k1"]
     b = params["b"]
 
@@ -780,6 +785,10 @@ def query(text, top_k=20):
         }
         for cid, score in ranked
     ]
+
+
+def query(text, top_k=20):
+    return score_index(load_index(), text, top_k)
 
 
 def stats():

@@ -6,6 +6,7 @@ import errno
 import json
 import os
 import stat
+import time
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
@@ -16,6 +17,12 @@ from .json_utils import parse_finite_json_float
 WORKSPACE_CONFIG = ".claude-obsidian.json"
 VAULT_SCHEMA = "claude-obsidian.workspace.v1"
 MAX_WORKSPACE_CONFIG_BYTES = 64 * 1024
+
+# A concurrently created directory can make the OS resolver report a transient
+# path. Retry the identical strict confinement check a few times, with a small
+# growing backoff, before failing closed.
+_RESOLUTION_ATTEMPTS = 5
+_RESOLUTION_BACKOFF = 0.002
 
 
 class VaultSelectionError(RuntimeError):
@@ -175,6 +182,24 @@ def _strict_json_loads(value: str) -> object:
     )
 
 
+def _casefold_within(path: Path, parent: Path) -> bool:
+    """Windows-only identity check: same root spelled with different case."""
+
+    if os.name != "nt":
+        return False
+    child = _portable_path_key(path).rstrip("/")
+    base = _portable_path_key(parent).rstrip("/")
+    return child.startswith(base + "/")
+
+
+def _lexically_within(path: Path, parent: Path) -> bool:
+    try:
+        Path(os.path.normpath(path)).relative_to(Path(os.path.normpath(parent)))
+        return True
+    except ValueError:
+        return _casefold_within(path, parent)
+
+
 def assert_within(
     root: Path,
     candidate: str | os.PathLike[str] | Path,
@@ -186,20 +211,30 @@ def assert_within(
     Existing symlinks are resolved by :meth:`Path.resolve`; non-existing leaf
     paths inherit the canonicalized parent. This makes the check suitable for
     both reads and planned writes.
+
+    A directory created concurrently by another process can make the resolver
+    report a transient path for a path that is lexically inside ``root``. In
+    that case the identical strict check is retried a few times; a genuine
+    escape resolves consistently and still fails closed.
     """
 
     root = canonical(root)
     raw = Path(candidate)
     joined = raw if raw.is_absolute() else root / raw
-    resolved = joined.resolve(strict=False)
-    if resolved == root and allow_root:
-        return resolved
-    if resolved == root or not is_relative_to(resolved, root):
-        raise VaultSelectionError(
-            "PATH_OUTSIDE_VAULT",
-            f"path resolves outside the selected vault: {candidate}",
-        )
-    return resolved
+    attempts = _RESOLUTION_ATTEMPTS if _lexically_within(joined, root) else 1
+    for attempt in range(attempts):
+        resolved = joined.resolve(strict=False)
+        if resolved == root:
+            if allow_root:
+                return resolved
+        elif is_relative_to(resolved, root) or _casefold_within(resolved, root):
+            return resolved
+        if attempt + 1 < attempts:
+            time.sleep(_RESOLUTION_BACKOFF * (attempt + 1))
+    raise VaultSelectionError(
+        "PATH_OUTSIDE_VAULT",
+        f"path resolves outside the selected vault: {candidate}",
+    )
 
 
 def _read_workspace_config(path: Path) -> Path:

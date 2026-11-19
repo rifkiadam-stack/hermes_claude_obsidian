@@ -393,7 +393,7 @@ def main() -> int:
     ap.add_argument("--status", action="store_true", help="Cetak status index saja")
     args = ap.parse_args()
 
-    vault = Path(args.vault)
+    vault = Path(args.vault).expanduser().resolve()
     if not vault.is_dir():
         print(f"ERR: vault tidak ditemukan: {vault}")
         return 1

@@ -41,7 +41,7 @@ The Python core (`claude_obsidian/`), deterministic lint, BM25 retrieval, ledger
 1. **Clone and install the skills**
 
    ```powershell
-   git clone https://github.com/rifkiadam-stack/hermes_claude_obsidian.git
+   git clone https://github.com/example-owner/hermes_claude_obsidian.git
    # copy skills/* into your Hermes profile skills dir, e.g. under skills/second-brain/
    ```
 
@@ -119,4 +119,4 @@ python -B scripts/claude-obsidian.py package validate
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Original work © 2026 AgriciDaniel (AI Marketing Hub); Hermes/native-Windows adaptation © 2026 Rifki Adam. Upstream: https://github.com/AgriciDaniel/claude-obsidian
+MIT — see [LICENSE](LICENSE). Original work © 2026 AgriciDaniel (AI Marketing Hub); Hermes/native-Windows adaptation © 2026 user. Upstream: https://github.com/AgriciDaniel/claude-obsidian
