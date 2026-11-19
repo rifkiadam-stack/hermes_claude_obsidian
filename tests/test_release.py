@@ -119,6 +119,7 @@ class ReleaseRepo(unittest.TestCase):
         }
         _write_json(self.repo / "config" / "release-allowlist.json", self.config)
         self.git("init", "-q")
+        self.git("config", "core.autocrlf", "false")
         # Hermetic fixture repositories must not inherit the developer's
         # machine-wide hooks (which may quite correctly reject seeded secrets).
         (self.repo / ".git" / "no-hooks").mkdir()
@@ -142,6 +143,8 @@ class ReleaseRepo(unittest.TestCase):
 
     def commit(self, message: str) -> None:
         self.git("add", "-A")
+        if (self.repo / "src" / "tool.py").is_file():
+            self.git("update-index", "--chmod=+x", "src/tool.py")
         self.git("commit", "-q", "-m", message)
 
     def write_config(self) -> None:
@@ -306,6 +309,11 @@ class BuildTests(ReleaseRepo):
             archive.extractall(distribution)
         subprocess.run(["git", "init", "-q", str(distribution)], check=True, timeout=10)
         subprocess.run(
+            ["git", "-C", str(distribution), "config", "core.autocrlf", "false"],
+            check=True,
+            timeout=10,
+        )
+        subprocess.run(
             [
                 "git",
                 "-C",
@@ -332,6 +340,15 @@ class BuildTests(ReleaseRepo):
         subprocess.run(
             ["git", "-C", str(distribution), "add", "-f", "-A"], check=True, timeout=10
         )
+        with zipfile.ZipFile(self.output) as archive:
+            manifest = json.loads(archive.read("RELEASE_MANIFEST.json"))
+        for item in manifest["files"]:
+            if item["mode"] == "0755":
+                subprocess.run(
+                    ["git", "-C", str(distribution), "update-index", "--chmod=+x", item["path"]],
+                    check=True,
+                    timeout=10,
+                )
         subprocess.run(
             ["git", "-C", str(distribution), "commit", "-q", "-m", "distribution"],
             check=True,
@@ -661,6 +678,23 @@ class AuditTests(ReleaseRepo):
         self.assertFalse(report["ok"])
         self.assertIn("path_escape", _codes(report))
         self.assertFalse((self.home / "outside.txt").exists())
+
+    def test_audit_reads_zip_in_binary_mode_when_dos_eof_byte_occurs(self) -> None:
+        artifact = self.home / "control-z.zip"
+        data, _ = release_module._artifact_bytes(
+            {"safe.txt": b"prefix\x1asuffix"},
+            modes={"safe.txt": 0o644},
+            commit="0" * 40,
+            source_date_epoch=EPOCH,
+            config={
+                "approved_private_url_disclosures": [],
+                "archive_overlays": {},
+                "reviewed_binaries": {},
+            },
+        )
+        artifact.write_bytes(data)
+        report = audit_artifact(artifact)
+        self.assertTrue(report["ok"], report)
 
     def test_archive_symlink_and_special_entry_are_rejected(self) -> None:
         malicious = self.home / "symlink.zip"

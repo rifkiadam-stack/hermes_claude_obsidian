@@ -2,6 +2,8 @@
 
 **claude-obsidian, adapted for [Hermes Agent](https://hermes-agent.nousresearch.com) on native Windows (no WSL).**
 
+<img alt="Release v2.1.0" src="https://img.shields.io/badge/release-v2.1.0-blue">
+
 This is a port of [AgriciDaniel/claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) — a local-first Agent Skills package for building source-cited, compounding Obsidian knowledge bases. The 15 upstream skills and the deterministic Python core are preserved; the host boundary (Claude Code / POSIX transactions) is replaced with Hermes Agent tooling and a reduced-guarantee native-Windows write guard.
 
 > **Status: beta.** This is a personal port maintained on a best-effort basis. It works and is security-reviewed, but it has not seen long production use. See [Limitations](#limitations).
@@ -116,6 +118,10 @@ python -B scripts/claude-obsidian.py package validate
 - `contracts --verify` reports `degraded` for `wiki`/`wiki-cli`/`wiki-lint` on Windows: their behavioral verifiers require vault mutation, which the upstream core refuses on this platform by design. Capabilities remain `valid` with no config errors.
 - Google-Drive-mounted vaults: sync may race writes; the guard rejects drift safely — retry the operation.
 - The upstream Claude Code plugin files (`.claude-plugin/`) are preserved for structural fidelity but are not the supported path here.
+
+## Releases
+
+For version 2.1.0, release tags use the format `release-v2.1.0-<YYYYMMDD>`.
 
 ## License
 
