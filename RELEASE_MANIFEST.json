@@ -64,8 +64,8 @@
     {
       "mode": "0644",
       "path": ".gitignore",
-      "sha256": "c9d9bb4a1bd450480412ec3c36cb7d963f66c36b24d678c5caa4146c95ac4d84",
-      "size": 3715
+      "sha256": "ca71c6ff18e9d0b1a62f7bc67676bc6a60ab50a7be42c1436d67f9dd3c05d705",
+      "size": 3948
     },
     {
       "mode": "0644",
@@ -88,8 +88,8 @@
     {
       "mode": "0644",
       "path": "CHANGELOG.md",
-      "sha256": "66b126f697df926ea2dc6ccf6bc8a54e0b04559caa9705cc5711893626578afb",
-      "size": 11551
+      "sha256": "f5297932a6718003fc793af96b7ea783dd49ed60f4765643202d80cef01cc2a4",
+      "size": 12099
     },
     {
       "mode": "0644",
@@ -124,8 +124,8 @@
     {
       "mode": "0644",
       "path": "LICENSE",
-      "sha256": "1c5915b8cde3e16949e40961353e483d44a65f90fae72405465dcff60118e57f",
-      "size": 1088
+      "sha256": "4368d3d03a965088480e3f2ecf1a4173f2532c8bf247f2010a1d62cf4c015ea8",
+      "size": 1147
     },
     {
       "mode": "0644",
@@ -142,8 +142,8 @@
     {
       "mode": "0644",
       "path": "README.md",
-      "sha256": "9f9c35874975b07f4d3c15ece2c17f6697067d50dba26e24e5e4b0babccfa8ef",
-      "size": 16692
+      "sha256": "d97f30cb15522c421613cf126ef37a7df6161380fd9626187d533ca3397c52bf",
+      "size": 7816
     },
     {
       "mode": "0644",
@@ -156,6 +156,24 @@
       "path": "WIKI.md",
       "sha256": "cac08db66f6c15cf137aa50cc18538aed595a2f76c4fe7873b5204fd6853640a",
       "size": 9409
+    },
+    {
+      "mode": "0644",
+      "path": "agents/hermes/ingest-worker.md",
+      "sha256": "52f4ce78ed594bf8111c12aaf6d730bddd7e7aeb1dfa622ff7161c1409640d0c",
+      "size": 1635
+    },
+    {
+      "mode": "0644",
+      "path": "agents/hermes/lint-worker.md",
+      "sha256": "cd85a515f5cfad6b4178465548ee8f329f6f0343b231fb355af7426f943680fd",
+      "size": 1322
+    },
+    {
+      "mode": "0644",
+      "path": "agents/hermes/verifier.md",
+      "sha256": "b4a752057b799ced89f48b6e2d31bddc34942fa9d40921e5837d209ca4e7c685",
+      "size": 1349
     },
     {
       "mode": "0644",
@@ -285,6 +303,18 @@
     },
     {
       "mode": "0644",
+      "path": "claude_obsidian/hermes_windows_bm25.py",
+      "sha256": "7b8943c281768a7433ce2e4047c458a9c3a33c6ec9ec4bb9b94201c0ac4bb0d4",
+      "size": 14661
+    },
+    {
+      "mode": "0644",
+      "path": "claude_obsidian/hermes_windows_write.py",
+      "sha256": "757c41a813813c60c91eb5b160cde881fe5a1b9d99c09d67246641f9ba413c72",
+      "size": 51951
+    },
+    {
+      "mode": "0644",
       "path": "claude_obsidian/hook_adapter.py",
       "sha256": "79a3824641fd146a8960b57ca74bc4cd7fa29688f8928cdcd0e6ecbce5b35743",
       "size": 11886
@@ -315,6 +345,24 @@
     },
     {
       "mode": "0644",
+      "path": "claude_obsidian/memori_guard_mcp.py",
+      "sha256": "fead54af435dd7b2995b99e2516f0fcb427aa29783410ed126579a99d30df58e",
+      "size": 36382
+    },
+    {
+      "mode": "0644",
+      "path": "claude_obsidian/memori_retrieval.py",
+      "sha256": "71b41e5c7e65a2d5eac88bf64c1eb1afafed42f5268d40664d851dc1b46ceed9",
+      "size": 16099
+    },
+    {
+      "mode": "0644",
+      "path": "claude_obsidian/memori_validasi.py",
+      "sha256": "60d877c38c4731d798b8e8f3bc0ab4577fbd0011932f7d5f7f2d642864f6a967",
+      "size": 11425
+    },
+    {
+      "mode": "0644",
       "path": "claude_obsidian/mode_config.py",
       "sha256": "0dfa01bfcf52e55bcc50f5f7bbc4b2c2cc945f333cb5847b933da9c2a2579cbb",
       "size": 2800
@@ -322,26 +370,26 @@
     {
       "mode": "0644",
       "path": "claude_obsidian/package_validation.py",
-      "sha256": "963a54659a961de4e9791dd9abaffa9ede7a9e490a48bccadb5f4122cdd731ef",
-      "size": 20819
+      "sha256": "fb03b4bdfe350bc070874b2754edd18ff705cf5698b5a6ddd886565c6c5fa79d",
+      "size": 26386
     },
     {
       "mode": "0644",
       "path": "claude_obsidian/paths.py",
-      "sha256": "970e7ba997d9a7666d99c24562881a3ea677053d77fe8fd3c689fd3b7988bbf6",
-      "size": 14533
+      "sha256": "04507229511bcdeccd9967e86cc9add7176e07cddba52a8b097cd0f23231508d",
+      "size": 15893
     },
     {
       "mode": "0644",
       "path": "claude_obsidian/release.py",
-      "sha256": "a99e4f09821caba7ccfd1f4cc564d7270447db47d3d1938f0d725786f1f49f87",
-      "size": 90792
+      "sha256": "434f2353bc15021aa013e3ea9bb88d34255b5dc9e64fb8b88b67506ae03fb9f9",
+      "size": 90857
     },
     {
       "mode": "0644",
       "path": "claude_obsidian/transaction.py",
-      "sha256": "822adf6104b0206b83483ecf3c605692bfa6607353f8dad2f94cf4f8256d5377",
-      "size": 176021
+      "sha256": "f8301a002772dbce6cd107ed2ec8a73a3f329b96070ae24c3a54103f14442936",
+      "size": 177208
     },
     {
       "mode": "0644",
@@ -364,8 +412,14 @@
     {
       "mode": "0644",
       "path": "config/capabilities.json",
-      "sha256": "9a372c18db93608f7112e8956f8dbb520c266e537b3794dee14b7436de3bc246",
-      "size": 17496
+      "sha256": "506e58bf6dc8272a9f22c5efebad0a0c07e68c46c205c48fe74b8c6863073649",
+      "size": 22625
+    },
+    {
+      "mode": "0644",
+      "path": "config/hermes-adapter.json",
+      "sha256": "2ecf8643d206c7d4dda33ae3ec07a8841e835c707001b964e8922e96e9cbe7a3",
+      "size": 3599
     },
     {
       "mode": "0644",
@@ -388,8 +442,14 @@
     {
       "mode": "0644",
       "path": "docs/compound-vault-guide.md",
-      "sha256": "acb59b1872295a40868c0ba395eef84855d9d64d5cc4cd1fe882379545b43ce3",
-      "size": 9458
+      "sha256": "3ad7192a28509f88992c5d12b5ec26e7d6810a0f9fe7e51371bf83ce21356b11",
+      "size": 9554
+    },
+    {
+      "mode": "0644",
+      "path": "docs/current-implementation.md",
+      "sha256": "0e29ff358d1a1dbf921d09df704a4b19933378a067b5bc6728ed56df2449808a",
+      "size": 4118
     },
     {
       "mode": "0644",
@@ -399,15 +459,45 @@
     },
     {
       "mode": "0644",
+      "path": "docs/hermes-native-windows.md",
+      "sha256": "c912442f2307196c35beb042c2c8769cbc87c3b2273cf28d03e24adf82337e70",
+      "size": 4418
+    },
+    {
+      "mode": "0644",
       "path": "docs/install-guide.md",
-      "sha256": "b4491a9119a2b7e970e26570095d3b07336adefa9fac359563c35eea4f585c41",
-      "size": 9318
+      "sha256": "a0a93b21e0311192ad9b6677a95be19cf708f50ab822f6cefba5c1685931464d",
+      "size": 9963
+    },
+    {
+      "mode": "0644",
+      "path": "docs/memori-guard-start.md",
+      "sha256": "c0388a7d95099534fecfea232cc8dccf01ebd356c6a9e7e979b416b6ff745966",
+      "size": 1209
+    },
+    {
+      "mode": "0644",
+      "path": "docs/memori-guard.md",
+      "sha256": "102e2420a9e748991f15837c1794e38b4fce0565e89b6fad2aa0307850311864",
+      "size": 1652
     },
     {
       "mode": "0644",
       "path": "docs/methodology-modes-guide.md",
       "sha256": "034369dfca27c5d81c60bc8e406ef58353e24848b69c3242378f3e54e2008c19",
       "size": 4122
+    },
+    {
+      "mode": "0644",
+      "path": "docs/publication-verification.md",
+      "sha256": "b2dfa17235e1125b1965df0bad6b7420c8bea62847e35e65084a05d4f93d3476",
+      "size": 2020
+    },
+    {
+      "mode": "0644",
+      "path": "docs/windows-wsl.md",
+      "sha256": "52175c72aaedddcf995198c4b4be10948976897813f0419e385e8ead44dbeead",
+      "size": 4262
     },
     {
       "mode": "0644",
@@ -508,8 +598,14 @@
     {
       "mode": "0755",
       "path": "scripts/bm25-index.py",
-      "sha256": "6d9a2d9fc6b9dd08061ed6606b7dbff60715de5e128e987581a722293bb61289",
-      "size": 31693
+      "sha256": "b6119060f17aa962b59188064fd8327053a094aaaab2ebfc99c8b4d2b21d3924",
+      "size": 32025
+    },
+    {
+      "mode": "0644",
+      "path": "scripts/bm25_provision_native.py",
+      "sha256": "2f2691b620dea7f432d324bc75ad2371fd66f02b772b8c6a420a66ed34bb3d9e",
+      "size": 18947
     },
     {
       "mode": "0755",
@@ -548,6 +644,12 @@
       "size": 13936
     },
     {
+      "mode": "0644",
+      "path": "scripts/second_brain_staging_cleanup.py",
+      "sha256": "da0bd3db1dccb3b1af1cf231b51138eca5c2c44114469bfd53c4564b5bff6533",
+      "size": 7709
+    },
+    {
       "mode": "0755",
       "path": "scripts/tiling-check.py",
       "sha256": "8f184015be341950e989df6f149513a67a844996eefad0e8083ebe33ca57ceec",
@@ -568,8 +670,8 @@
     {
       "mode": "0644",
       "path": "skills/autoresearch/SKILL.md",
-      "sha256": "e369ab3e1181ddebd70fd61eeb623edc7eab7d123ea32ff4e6ac75ec315db0ce",
-      "size": 6202
+      "sha256": "d65e57a1fca2a02f3fe6d024f6683f61bdf7167abfd3f39c999058476486807f",
+      "size": 6170
     },
     {
       "mode": "0644",
@@ -580,56 +682,128 @@
     {
       "mode": "0644",
       "path": "skills/canvas/SKILL.md",
-      "sha256": "cc2eea755757765f512b1604dde8444ef0c5836a7ea3baa3df927e13db947ab6",
-      "size": 5250
+      "sha256": "8b89862bbe2708280807a40d412f037bfb6416f7c15b191958cadb4a59572bfc",
+      "size": 5194
     },
     {
       "mode": "0644",
       "path": "skills/canvas/references/canvas-spec.md",
-      "sha256": "de66f7d6473e5d4fecee221f5d52c06e7bf63e6130fe57c6c2446f79ddfbe1d1",
-      "size": 9002
+      "sha256": "b6a77a238983fd696f5f6a07d7abab98615be7b6108236f0f7b7912e82544cb2",
+      "size": 9001
     },
     {
       "mode": "0644",
       "path": "skills/defuddle/SKILL.md",
-      "sha256": "458b6a3fbd2051ce908790983f091e424af09ee680adf6b72495be4a40318c7a",
-      "size": 4387
+      "sha256": "4a68941969725839a412e9b4a41ab6e232e4f64cfa6ccecc2aed5986fb1bc6c1",
+      "size": 4362
     },
     {
       "mode": "0644",
       "path": "skills/obsidian-bases/SKILL.md",
-      "sha256": "58828855d8b4f58c6d0dbe8ec56c1675e44464f92ca414f902744cbd8221b878",
-      "size": 4485
+      "sha256": "c3282a03e65c9e4e19d9979e45d48515e831f1cbb5955b5120ebaa8ac3545fe3",
+      "size": 4464
     },
     {
       "mode": "0644",
       "path": "skills/obsidian-markdown/SKILL.md",
-      "sha256": "b56603d91740117460ecc3bbf30f7ce1e83ae184e4af5be955e8b1a7b04fb63c",
-      "size": 4303
+      "sha256": "d22aab8bf2e5631986461f3ded3a747d0beac89f73c04a27ebc837834071b257",
+      "size": 4328
     },
     {
       "mode": "0644",
       "path": "skills/save/SKILL.md",
-      "sha256": "b98a175ed02f00f73c19fe386379f3a45d2d7c86e1936d47bc8d981c1171be4c",
-      "size": 4995
+      "sha256": "9a61c97fda1392a59def2a7c20c6480a36c0d16ba4709e49b48b25be27666b6f",
+      "size": 5061
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-clippings-ingest/SKILL.md",
+      "sha256": "f57452d9ed109b3798f4391019caa78c2621f7a78b4bf625165c86c107f83b1f",
+      "size": 10960
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-clippings-ingest/references/ingest-fidelity-and-routing.md",
+      "sha256": "7b1c50c250278589663e42c77a28397e6229768d34b09eb247cde19f8201f8bb",
+      "size": 6540
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-clippings-ingest/references/preservation-and-mode-review.md",
+      "sha256": "815fa7f2c104acb0b66d004319106c88e4bccce7125ddbf7a15c4744a81074c8",
+      "size": 3364
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-ingest-operations/SKILL.md",
+      "sha256": "2c0b887e4597fda2ebce33ed4d2d334a4e3a29380cfa433d9b6b850817ec61c5",
+      "size": 31576
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-ingest-operations/references/market-snapshot-consistency.md",
+      "sha256": "b06fadb5b198e28727735dff065f0e1974d4b8e40dba42d6197aec530d933c40",
+      "size": 3945
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-ingest-operations/references/market-update-daily-ingest-recipe.md",
+      "sha256": "e865ec37eb97f950973b965b9a4d779eda38a3d3e209ecba72a0d79c35fedba9",
+      "size": 9391
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-ingest-operations/references/native-windows-pasted-text-ingest.md",
+      "sha256": "0d4a34749a77883e84c36fb267c198c589cd59afca16a685ec919d50726e87cf",
+      "size": 4321
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-ingest-operations/references/transcript-design-review.md",
+      "sha256": "a0241e665e20ebb2eeabf08cd472ed2ff83c71a501ad5e9589c29e094c2426be",
+      "size": 5218
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-native-windows/SKILL.md",
+      "sha256": "31929cf050ebc2dd1f38f5288cafb217b5fc87eeb7c9c921490288089e20e8e1",
+      "size": 21287
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-native-windows/references/asset-rename-workflow.md",
+      "sha256": "703a52ff5501774a91b7c795596377d8c742ac89c7d88ad39943d02edf2b1e7e",
+      "size": 1993
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-native-windows/references/bm25-native-windows.md",
+      "sha256": "22a14970963d77388cc84ebc007fcf73b5eb941ae84e98f173e3df6cff5c8161",
+      "size": 7348
+    },
+    {
+      "mode": "0644",
+      "path": "skills/second-brain-native-windows/references/staging-cleanup-guard.md",
+      "sha256": "709344859071397d5db1f34c792253a5013611cc426fe5f3546e4d918eb8ff0c",
+      "size": 1816
     },
     {
       "mode": "0644",
       "path": "skills/think/SKILL.md",
-      "sha256": "3a50f23f31b6aca41fae5d76017dace73191bbdde0cfb4c9515d069a9005644a",
-      "size": 4666
+      "sha256": "876448b42e2835dcf92c67984140e17c41d262161f5409cabddbe1a885c91e31",
+      "size": 4613
     },
     {
       "mode": "0644",
       "path": "skills/wiki-cli/SKILL.md",
-      "sha256": "2885621fc55c1edd0954f86089f2258618ac38c92f329cae19cfdca8334145ec",
-      "size": 2855
+      "sha256": "aa268d6cd87c5d51ed4aeb5d7ed35a8e3e844ba93f283272d36547fe8d5ff9ab",
+      "size": 2800
     },
     {
       "mode": "0644",
       "path": "skills/wiki-fold/SKILL.md",
-      "sha256": "a887e48737eab42303e584085cbcb18a679af8a0181c84d2c4035345d66080cb",
-      "size": 4423
+      "sha256": "115b4e0f0bd71115052c39a9a3e3d8e6effb7c5b1924ed368bcaef17161a6fd5",
+      "size": 4413
     },
     {
       "mode": "0644",
@@ -640,20 +814,32 @@
     {
       "mode": "0644",
       "path": "skills/wiki-ingest/SKILL.md",
-      "sha256": "3fb3bc9b9b6dafe988cd71883fced9820af60f8ca8ba1278d6d74a15b0e8bffa",
-      "size": 7562
+      "sha256": "a7177247a4c616f981a8265977549790780770424511cd8f09af448ef2960ccf",
+      "size": 15268
+    },
+    {
+      "mode": "0644",
+      "path": "skills/wiki-ingest/references/islamic-lectures.md",
+      "sha256": "ea722a1b7f28d2608621edb5df254feb0f7cabb6c57e05957da5629634cdb70f",
+      "size": 1774
+    },
+    {
+      "mode": "0644",
+      "path": "skills/wiki-ingest/references/transcript-sources.md",
+      "sha256": "b01ad143f752afa5cf27822f7e3501bdf0ac9c20e960361120cf3e5ee2ec145a",
+      "size": 3542
     },
     {
       "mode": "0644",
       "path": "skills/wiki-lint/SKILL.md",
-      "sha256": "e268098bb634c979cb288a560e230d4d4bab776b42320551157c21b7edf61f9c",
-      "size": 3029
+      "sha256": "84a12f6ee2e4f31114911d99c225398c41dfde45f564948277da35b7adf02bf6",
+      "size": 3302
     },
     {
       "mode": "0644",
       "path": "skills/wiki-mode/SKILL.md",
-      "sha256": "13800d7af8548db487475f5a7249a620febb584d0b9ce39338bc91756d70ae1d",
-      "size": 3992
+      "sha256": "6cf8a0a4066d6d4ec12ebb72ad25bedf8b29aaa2c4a1460b4e4a8984d6d55e0e",
+      "size": 3950
     },
     {
       "mode": "0644",
@@ -694,20 +880,20 @@
     {
       "mode": "0644",
       "path": "skills/wiki-query/SKILL.md",
-      "sha256": "21f6c4f2e9dbcf583c4867765c1b3b19c8849e0815197fc6b7e49c2fea17b892",
-      "size": 4497
+      "sha256": "998fc40ad8ddf272c0bd8c9bf4225cb25c38a1a65c91bff01574b21b15a21c6c",
+      "size": 4506
     },
     {
       "mode": "0644",
       "path": "skills/wiki-retrieve/SKILL.md",
-      "sha256": "1e7735d493e9f9943e079cfec0d28d8db76821b1f50e0f569dea8e115a8b67b6",
-      "size": 5585
+      "sha256": "bfe7dbcc47ce5158ac1fd472d41fb72e6f0774e471f6efaa4f6f04f367aa55a0",
+      "size": 5705
     },
     {
       "mode": "0644",
       "path": "skills/wiki/SKILL.md",
-      "sha256": "965568b92479236bb48eed617901f2d786405384a0f328f22454960e058c3492",
-      "size": 5387
+      "sha256": "b14971595bd06b63b5e52883091282fc92db1bcecf98c2b9b2371b5758920467",
+      "size": 6546
     },
     {
       "mode": "0644",
@@ -724,14 +910,14 @@
     {
       "mode": "0644",
       "path": "skills/wiki/references/git-setup.md",
-      "sha256": "932c92d490ac7f998065d9188d47b571578cb8ba60258cf5e401602cc77c0714",
-      "size": 2577
+      "sha256": "8fb1229794dc54245973f1708b70bdd4b87623644cec5d605a6a1dad0950430e",
+      "size": 2576
     },
     {
       "mode": "0644",
       "path": "skills/wiki/references/install-modes.md",
-      "sha256": "1ae30c16ed0d205a70b10926a1c11667cc690a223a170478e63b4f047266f69f",
-      "size": 1922
+      "sha256": "51b0ce8e1f86b790dc62200fd9d7e71eaa8b6508e780982c10c301daf8b19b91",
+      "size": 1914
     },
     {
       "mode": "0644",
@@ -748,8 +934,8 @@
     {
       "mode": "0644",
       "path": "skills/wiki/references/operation-transactions.md",
-      "sha256": "522f64f19c04a2cac86309bb3bc86ec715171ff07833cd35f5791a5e43e5d90a",
-      "size": 6104
+      "sha256": "23b6aba0e28b0cdc46f11910a4b6e4ba52b6150b9daa499490d71d6a1e8d8c1f",
+      "size": 6186
     },
     {
       "mode": "0644",
@@ -760,8 +946,8 @@
     {
       "mode": "0644",
       "path": "skills/wiki/references/provenance.md",
-      "sha256": "df8f40d1213a557ee70cc55a18a0fa333b3f24090e6c6a492688baa0668b5567",
-      "size": 2581
+      "sha256": "f4bc7478299c73e0f624200940eefa63cf6784f718ef4f60d50ca2c173613a2f",
+      "size": 2579
     },
     {
       "mode": "0644",
@@ -974,6 +1160,162 @@
       "size": 117
     },
     {
+      "mode": "0644",
+      "path": "tests/memori_guard/conftest.py",
+      "sha256": "5fcdd97f888f304c3c5909f324177641e7a9f21b80db7b17db6ebda9fbf6be3a",
+      "size": 9758
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/kerangka-vault/_konvensi-memori.md",
+      "sha256": "6c0ac91f11654feea757a0a0cfae40a097a7e8a43b9f77707875ea7ca9a30a1e",
+      "size": 114
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/kerangka-vault/_template-sesi-log.md",
+      "sha256": "d229837d25739de6560052471fcb6b2ebe673ac9429350d031e89bb6d5d6cc34",
+      "size": 43
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/kerangka-vault/_template-sesi.md",
+      "sha256": "2a14807672ef617fa284ab891824495baa5e0c5563aa22160a75aeec19b4fcff",
+      "size": 51
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/kerangka-vault/sesi-log/_belum-terpilah.md",
+      "sha256": "e231620e23aa01f9fab83efbd2bf61051f61e5cb5dc7453d046f5a159f10a923",
+      "size": 29
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/kerangka-vault/sesi-log/profil-log.md",
+      "sha256": "ff720f8badebbaefb492e8599f2e29baa17560d410a07f74b5272419b969d314",
+      "size": 32
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/kerangka-vault/wiki/profil/preferensi.md",
+      "sha256": "82f9940d3b8ce82d0926e566cd8f94d6680582e19d02749e12058e1898b03775",
+      "size": 61
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/kerangka-vault/wiki/profil/profil.md",
+      "sha256": "e7f7a3e9b564247f7c306e995b7ddf2fe0e9dcc9f48e219b845a19b45fa78f13",
+      "size": 96
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/kerangka-vault/wiki/sesi/_index.md",
+      "sha256": "201dfc90d600323838186b4b417405331fbd5ad6102abd8182394d841a2dc96b",
+      "size": 21
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/entitas/penerbit-fiktif.md",
+      "sha256": "bd627ad6b0e69b8eab3c804f3d1bf5d444436fef9b6d2b9831c44aa787b79858",
+      "size": 142
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/index.md",
+      "sha256": "8478cb3b6c27ea7c821c16db85c25624730ca492df7a2eff299aca6cd2ccb471",
+      "size": 60
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/konsep/judul-dari-h1.md",
+      "sha256": "55b693aab963487178e0bd7bbfe642a52637ee1e61f1d9259bea028226ccc103",
+      "size": 47
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/konsep/judul-dari-nama-file.md",
+      "sha256": "1bcb63782326a03de1efd859c47ff6aaca5a8d7ea46d2a84196d8a1127786923",
+      "size": 30
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/konsep/judul-frontmatter-menang.md",
+      "sha256": "4e46dfb9a03e4084d793e6565057d406e796b3e7edcf095f3410d26c3ceaeac4",
+      "size": 84
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/konsep/kupon-tetap.md",
+      "sha256": "b85068d6d3b8c8edb7fe3cc33ecaaeed95373812fa2dfaa2990a4378d99ed4e8",
+      "size": 150
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/konsep/obligasi-negara.md",
+      "sha256": "4f8fbf57fd0c56da49d3acb2ca71be61cf00d9cdd3b3528651720dec7a908439",
+      "size": 185
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/konsep/panjang-sekali.md",
+      "sha256": "9306a95a49630189a6b73ecfcf5f65bd3337a3c2024f5ce858b97058238516de",
+      "size": 7992
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/konsep/tanpa-type.md",
+      "sha256": "cdb43cddc75c6aef269c8e43f3f5949d316967b66ce32b2542f26749c8c85458",
+      "size": 108
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/sesi/uji-cari.md",
+      "sha256": "8d2911eee8f62a638538abea948cdf4194ef48ac218b1f0696aa92aadbdc9220",
+      "size": 155
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/sumber/arsip/2025/catatan-pasar.md",
+      "sha256": "cc3ad0c7b749fdfb6cd0182822d1525c0c31dfd320e05000bb7d18581b4e0135",
+      "size": 167
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/fixtures/pengetahuan-vault/wiki/sumber/laporan-lelang-2026.md",
+      "sha256": "f84a5644d231ae5c70c6d09e5d48dbd6d12e8297967b771b74d1af53d3977b52",
+      "size": 190
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/mcp_klien.py",
+      "sha256": "fdb1d1f87161fb48c1d6a3f323ac99e6a7887c014019f23eef86710b6d9a2208",
+      "size": 15458
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/requirements.txt",
+      "sha256": "865f01a8e1b7917fed2e0c79e6f98dd248db52b50d0623913df51329ea2f645b",
+      "size": 138
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/test_acceptance_search.py",
+      "sha256": "f22f6bf6ea024fc9dbafb91980eb3dd321fbcff5277ee078b1d799a3a43f39ac",
+      "size": 55352
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/test_acceptance_write.py",
+      "sha256": "dff3f26ff681114c515ad70259f53ca8435bdb0decf527b351469b1a5c65f65b",
+      "size": 43842
+    },
+    {
+      "mode": "0644",
+      "path": "tests/memori_guard/test_env_security.py",
+      "sha256": "af7166ef8e93a05e09115926953d18fbdd870914b308a562713380f7f55e6929",
+      "size": 959
+    },
+    {
       "mode": "0755",
       "path": "tests/test_allocate_address.sh",
       "sha256": "bb55bb7acebdc9ba4b6f70a953886194e44a5381d32843bfc54973b468d6ea74",
@@ -986,10 +1328,28 @@
       "size": 6199
     },
     {
+      "mode": "0644",
+      "path": "tests/test_bm25_cache_delete_scope.py",
+      "sha256": "e988a1811f6b42925abc1710e8ffb3fc779fa3bfceaa886ec728a9df7861c5c8",
+      "size": 3182
+    },
+    {
       "mode": "0755",
       "path": "tests/test_bm25_index.py",
       "sha256": "4f2d7368d73cc94e7fa4799637043ca727528a240072c97f71dc68f2bd0c4aff",
       "size": 38184
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_bm25_provision_native.py",
+      "sha256": "aad69657ee4cd984988420e417fed7d0d510e30fdca7c1ca380db75ee89e8e09",
+      "size": 16970
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_bm25_provision_native_routing.py",
+      "sha256": "a339ce2ef2f044e869b18eb43a9c3f391f06baf6eb707b9cf5e0dafbe8da0a2c",
+      "size": 6323
     },
     {
       "mode": "0755",
@@ -1036,8 +1396,8 @@
     {
       "mode": "0644",
       "path": "tests/test_contracts.py",
-      "sha256": "11329e5d5d10b68439ccb585af66c538166f9121d34c90e20424fde023814162",
-      "size": 18264
+      "sha256": "23020fb472b9113c5e343574a4a2570e6b877515a1d4767defe32a8f1ad55cd8",
+      "size": 19619
     },
     {
       "mode": "0644",
@@ -1065,6 +1425,30 @@
     },
     {
       "mode": "0644",
+      "path": "tests/test_hermes_adapter.py",
+      "sha256": "f5b3d8f4f5bce0311bddd5678690105177608c90f5315fbff768822bac2a4593",
+      "size": 4293
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_hermes_skill_port.py",
+      "sha256": "e8cacba9200314dfa085e234e247630a8addb51d54f66e8caac26dd3e6fe2712",
+      "size": 7011
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_hermes_windows_bm25.py",
+      "sha256": "afd65c40e664aa8e99e5135bf3ffe81dbdfaa4764a29e8387fb0384b92d16faf",
+      "size": 12750
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_hermes_windows_write.py",
+      "sha256": "0ed09dab1037c53d4f3b88cb51c2cbb7bf8da642c950ce937cb798203fc51fd7",
+      "size": 49495
+    },
+    {
+      "mode": "0644",
       "path": "tests/test_hooks.py",
       "sha256": "98064cbed515efbe786dccc246940288e40ad37ed267d6e1a7bc87a93ad9c5ed",
       "size": 9701
@@ -1078,8 +1462,8 @@
     {
       "mode": "0644",
       "path": "tests/test_knowledge_contracts.py",
-      "sha256": "b52a89e7c454aae499b604870df7261883de7ce7ea8ec06d621fe13d31689362",
-      "size": 11177
+      "sha256": "93f7f1051a248bed122356f30d5e678285110277a0bb4651983d891d47e0f48b",
+      "size": 11154
     },
     {
       "mode": "0644",
@@ -1101,9 +1485,39 @@
     },
     {
       "mode": "0644",
+      "path": "tests/test_memori_guard_cari.py",
+      "sha256": "0d6c085563fcb4cf95de7a89468dc91caf2e96eccdb171710d1dd259762c4456",
+      "size": 15656
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_memori_prepare_recovery.py",
+      "sha256": "c6ac14e391df130664faf638c3293d824ab3e898111b6663e34c54f0c9cf0462",
+      "size": 9437
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_memori_recovery_branches.py",
+      "sha256": "830646b18fdc990d73749cfb610bb9033edebd61bf16622d5e8dbf120a1c792a",
+      "size": 5858
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_memori_runtime_concurrency.py",
+      "sha256": "bd70b470cca51b800156073e0942531391a6fbea5be6248a6f753a0588a1a339",
+      "size": 3699
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_memori_validasi.py",
+      "sha256": "e1a540954fcdcf4ce23c9471e96e1294fe801183f974237d77db0e8db3f47f86",
+      "size": 6722
+    },
+    {
+      "mode": "0644",
       "path": "tests/test_package_validation.py",
-      "sha256": "2e48dbc38a0d889c5bfa4ffe34b44c5223d61e0d002d96aaad6795202f180e1c",
-      "size": 13378
+      "sha256": "8e05d363daf58c5c48136283471968ea8839444a9d35d03051dfae04ed0ffc25",
+      "size": 15480
     },
     {
       "mode": "0644",
@@ -1114,14 +1528,20 @@
     {
       "mode": "0644",
       "path": "tests/test_release.py",
-      "sha256": "a1953341b61b90c8980e0d49b0af72ce54ab9698dfc108855b045a63e6667e87",
-      "size": 36089
+      "sha256": "31ce5993716d82fed0dfa38d63c40a9b23d1813b93216e1f179b15411b1eb622",
+      "size": 37483
     },
     {
       "mode": "0755",
       "path": "tests/test_retrieve.py",
       "sha256": "0220c4b1e8e19dfc66555a41729ad9095c3f300cab2f8336806b116558c142cc",
       "size": 47364
+    },
+    {
+      "mode": "0644",
+      "path": "tests/test_second_brain_staging_cleanup.py",
+      "sha256": "fbeb871cf15b752f96aefd679ffd24ebe94d5e6c7ffa603e6ab8af9495f868cc",
+      "size": 7281
     },
     {
       "mode": "0644",
@@ -1186,8 +1606,8 @@
     {
       "mode": "0644",
       "path": "tests/test_windows_compat.py",
-      "sha256": "b14a2591cc9b871cd79015f0aa7dff83af06f45d40be37d5febafb6c769da7da",
-      "size": 19371
+      "sha256": "eefda3c96ff713be9d6998f929c7eb992f29417588123752d457255ecf59ede8",
+      "size": 19455
     }
   ],
   "policy": {
@@ -1205,6 +1625,6 @@
     }
   },
   "schema_version": 1,
-  "source_commit": "68ab552d40dfc1cc5a154f2c3a0d02d9c21b0cb1",
-  "source_date_epoch": 1785518782
+  "source_commit": "927f94f6e62a6ff8f87c11dd07f863695a148349",
+  "source_date_epoch": 1795058101
 }
