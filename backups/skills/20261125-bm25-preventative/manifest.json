@@ -1,0 +1,13 @@
+{
+  "purpose": "Exact pre-change backup of native Windows BM25 operational skill, default and obsidian profiles; no credentials or vault content",
+  "sha256": {
+    "backups/skills/20261125-bm25-preventative/default/second-brain-native-windows/SKILL.md": "62ed5fbec089f37897f79089c3f435dbb3a402bfdcc43f895244e2f5c4da9c86",
+    "backups/skills/20261125-bm25-preventative/default/second-brain-native-windows/references/asset-rename-workflow.md": "f1e769f09c549172d2ba25a63b8eca67ef71c93e495910fe27483969b66ad260",
+    "backups/skills/20261125-bm25-preventative/default/second-brain-native-windows/references/bm25-native-windows.md": "4e069518539b451b8e0887c5d864053170b41c35733640262ccc5c53665580f8",
+    "backups/skills/20261125-bm25-preventative/default/second-brain-native-windows/references/staging-cleanup-guard.md": "d2040623717dccfc2356a7923428ed0f57c4d02472280ac07a315281a8653a4b",
+    "backups/skills/20261125-bm25-preventative/obsidian/second-brain-native-windows/SKILL.md": "62ed5fbec089f37897f79089c3f435dbb3a402bfdcc43f895244e2f5c4da9c86",
+    "backups/skills/20261125-bm25-preventative/obsidian/second-brain-native-windows/references/asset-rename-workflow.md": "f1e769f09c549172d2ba25a63b8eca67ef71c93e495910fe27483969b66ad260",
+    "backups/skills/20261125-bm25-preventative/obsidian/second-brain-native-windows/references/bm25-native-windows.md": "4e069518539b451b8e0887c5d864053170b41c35733640262ccc5c53665580f8",
+    "backups/skills/20261125-bm25-preventative/obsidian/second-brain-native-windows/references/staging-cleanup-guard.md": "d2040623717dccfc2356a7923428ed0f57c4d02472280ac07a315281a8653a4b"
+  }
+}
